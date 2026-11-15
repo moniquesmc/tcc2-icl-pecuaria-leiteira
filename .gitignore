@@ -16,3 +16,7 @@ dados/brutos/
 dados/processados/texto_bruto_paginas.json
 dados/processados/perguntas_estruturadas_parcial.json
 dados/processados/prompts_exemplos/
+
+# Cache de provedores testados e abandonados (não usados nos resultados)
+dados/processados/cache_respostas/qwen-groq.jsonl
+dados/processados/cache_respostas/llama-nvidia.jsonl

@@ -35,6 +35,8 @@ scripts/
   6_calcular_metricas.py              tabelas, testes t e gráficos
   9_exibir_prompts.py                 reconstrói o prompt de cada técnica (análise de erros)
   10_gerar_apresentacao.py            apresentação HTML interativa com os resultados
+  11_ajustar_hiperparametros.py       testa k do KATE e nº de exemplos do Few-shot na validação
+  contar_categorias.py, teste_*.py    utilitários (contagem por categoria, teste das APIs)
   comum.py                            configurações, prompts e funções compartilhadas
 dados/processados/                    perguntas estruturadas, folds, resultados, gráficos e cache
 apresentacao/                         modelo da apresentação
@@ -52,6 +54,7 @@ copy .env.example .env          # e preencha as chaves de API
 1. Baixe o PDF do manual no site da Embrapa e salve em `dados/brutos/500perguntasgadoleite.pdf` (o livro não é distribuído neste repositório).
 2. Rode os scripts na ordem: 1, 2, 3, 3b, 4, 5, 7, 8 e 6. Use `--modelo ollama|qwen|llama-70b|gemini` para escolher o modelo.
 3. Para apenas recalcular as métricas com as respostas já salvas, basta rodar `python scripts/6_calcular_metricas.py` e `python scripts/10_gerar_apresentacao.py`.
+4. Ajuste de hiperparâmetros (opcional): `python scripts/11_ajustar_hiperparametros.py --modelo qwen --avaliar-teste`.
 
 ## Principais resultados (F1-macro, média dos 5 folds)
 
