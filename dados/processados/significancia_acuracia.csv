@@ -1,0 +1,37 @@
+﻿modelo;metodo;tecnica;media;dp;ic95;folds;melhor_do_modelo;p_valor_vs_melhor;negrito
+ollama;ape;APE;31,8;7,5961;9,4317;5;Ordenação (KATE invertido);0,0476;False
+ollama;calibracao;Calibração;19,6;8,0187;9,9566;5;Ordenação (KATE invertido);0,0005;False
+ollama;fewshot;Few-shot;20,2;6,8702;8,5305;5;Ordenação (KATE invertido);0,0046;False
+ollama;globale;GlobalE;23,6;6,8044;8,4488;5;Ordenação (KATE invertido);0,0195;False
+ollama;kate;KATE;39,0;3,0822;3,8271;5;Ordenação (KATE invertido);0,8466;True
+ollama;locale;LocalE;21,4;4,827;5,9935;5;Ordenação (KATE invertido);0,0007;False
+ollama;ordenacao;Ordenação (KATE invertido);39,2;4,1473;5,1495;5;Ordenação (KATE invertido);;True
+ollama;sg_icl;SG-ICL;17,4;2,9665;3,6834;5;Ordenação (KATE invertido);0,0008;False
+ollama;zeroshot;Zero-shot;27,0;4,9497;6,1459;5;Ordenação (KATE invertido);0,0039;False
+qwen;ape;APE;81,4;3,2863;4,0805;5;KATE;0,0304;False
+qwen;calibracao;Calibração;80,4;3,7815;4,6954;5;KATE;0,0441;False
+qwen;fewshot;Few-shot;83,4;2,7019;3,3548;5;KATE;0,0876;True
+qwen;globale;GlobalE;84,4;2,4083;2,9903;5;KATE;0,4557;True
+qwen;kate;KATE;85,2;2,7749;3,4455;5;KATE;;True
+qwen;locale;LocalE;83,2;3,0332;3,7662;5;KATE;0,1027;True
+qwen;ordenacao;Ordenação (KATE invertido);85,0;3,0822;3,8271;5;KATE;0,8379;True
+qwen;sg_icl;SG-ICL;81,8;3,1145;3,8671;5;KATE;0,1055;True
+qwen;zeroshot;Zero-shot;81,4;1,9494;2,4204;5;KATE;0,0173;False
+llama-70b;ape;APE;77,6;2,7928;3,4678;5;KATE;0,0025;False
+llama-70b;calibracao;Calibração;81,0;5,7009;7,0786;5;KATE;0,5291;True
+llama-70b;fewshot;Few-shot;79,2;3,1145;3,8671;5;KATE;0,0179;False
+llama-70b;globale;GlobalE;79,8;4,4944;5,5806;5;KATE;0,0093;False
+llama-70b;kate;KATE;82,2;3,9623;4,9199;5;KATE;;True
+llama-70b;locale;LocalE;80,0;3,7417;4,6459;5;KATE;0,0858;True
+llama-70b;ordenacao;Ordenação (KATE invertido);82,0;4,3012;5,3406;5;KATE;0,7489;True
+llama-70b;sg_icl;SG-ICL;80,4;3,5071;4,3547;5;KATE;0,0533;True
+llama-70b;zeroshot;Zero-shot;77,4;2,3022;2,8585;5;KATE;0,022;False
+gemini;ape;APE;82,6;1,5166;1,8831;5;Calibração;0,0255;False
+gemini;calibracao;Calibração;85,2;1,3038;1,6189;5;Calibração;;True
+gemini;fewshot;Few-shot;84,6;1,6733;2,0777;5;Calibração;0,3046;True
+gemini;globale;GlobalE;84,6;1,6733;2,0777;5;Calibração;0,3046;True
+gemini;kate;KATE;82,4;2,9665;3,6834;5;Calibração;0,0586;True
+gemini;locale;LocalE;84,0;2,1213;2,634;5;Calibração;0,2355;True
+gemini;ordenacao;Ordenação (KATE invertido);83,4;3,0496;3,7866;5;Calibração;0,1671;True
+gemini;sg_icl;SG-ICL;83,6;1,8166;2,2556;5;Calibração;0,1202;True
+gemini;zeroshot;Zero-shot;81,8;2,2804;2,8314;5;Calibração;0,0215;False

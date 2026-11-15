@@ -1,0 +1,73 @@
+﻿modelo;metodo;tipologia;acuracia;f1_macro;invalidas;n;tecnica
+gemini;ape;Booleana;81,16;82,18;0,0;138,0;APE
+gemini;ape;Descritiva;83,15;80,44;0,0;362,0;APE
+gemini;calibracao;Booleana;84,78;83,87;0,0;138,0;Calibração
+gemini;calibracao;Descritiva;85,36;82,45;0,0;362,0;Calibração
+gemini;fewshot;Booleana;84,06;81,79;0,0;138,0;Few-shot
+gemini;fewshot;Descritiva;84,81;82,43;0,0;362,0;Few-shot
+gemini;globale;Booleana;84,06;81,79;0,0;138,0;GlobalE
+gemini;globale;Descritiva;84,81;82,43;0,0;362,0;GlobalE
+gemini;kate;Booleana;82,61;87,38;0,0;138,0;KATE
+gemini;kate;Descritiva;82,32;78,48;0,0;362,0;KATE
+gemini;locale;Booleana;83,33;83,2;0,0;138,0;LocalE
+gemini;locale;Descritiva;84,25;82,78;0,0;362,0;LocalE
+gemini;ordenacao;Booleana;81,16;78,04;0,0;138,0;Ordenação (KATE invertido)
+gemini;ordenacao;Descritiva;84,25;79,96;0,0;362,0;Ordenação (KATE invertido)
+gemini;sg_icl;Booleana;83,33;80,89;0,0;138,0;SG-ICL
+gemini;sg_icl;Descritiva;83,7;79,89;0,0;362,0;SG-ICL
+gemini;zeroshot;Booleana;81,16;77,02;0,0;138,0;Zero-shot
+gemini;zeroshot;Descritiva;82,04;78,72;0,0;362,0;Zero-shot
+llama-70b;ape;Booleana;75,36;70,75;0,0;138,0;APE
+llama-70b;ape;Descritiva;78,45;74,01;0,0;362,0;APE
+llama-70b;calibracao;Booleana;75,36;71,39;0,0;138,0;Calibração
+llama-70b;calibracao;Descritiva;83,15;81,08;0,0;362,0;Calibração
+llama-70b;fewshot;Booleana;77,54;65,79;0,0;138,0;Few-shot
+llama-70b;fewshot;Descritiva;79,83;77,55;0,0;362,0;Few-shot
+llama-70b;globale;Booleana;76,81;64,82;0,0;138,0;GlobalE
+llama-70b;globale;Descritiva;80,94;79,04;0,0;362,0;GlobalE
+llama-70b;kate;Booleana;84,78;81,07;0,0;138,0;KATE
+llama-70b;kate;Descritiva;81,22;79,65;0,0;362,0;KATE
+llama-70b;locale;Booleana;77,54;75,01;0,0;138,0;LocalE
+llama-70b;locale;Descritiva;80,94;79,22;0,0;362,0;LocalE
+llama-70b;ordenacao;Booleana;82,61;79,88;0,0;138,0;Ordenação (KATE invertido)
+llama-70b;ordenacao;Descritiva;81,77;79,39;0,0;362,0;Ordenação (KATE invertido)
+llama-70b;sg_icl;Booleana;78,99;76,75;0,0;138,0;SG-ICL
+llama-70b;sg_icl;Descritiva;80,94;77,67;0,0;362,0;SG-ICL
+llama-70b;zeroshot;Booleana;76,09;70,38;0,0;138,0;Zero-shot
+llama-70b;zeroshot;Descritiva;77,9;73,31;0,0;362,0;Zero-shot
+ollama;ape;Booleana;15,94;19,27;0,0;138,0;APE
+ollama;ape;Descritiva;37,85;36,11;0,28;362,0;APE
+ollama;calibracao;Booleana;16,67;14,12;0,0;138,0;Calibração
+ollama;calibracao;Descritiva;20,72;16,48;0,0;362,0;Calibração
+ollama;fewshot;Booleana;20,29;24,21;0,72;138,0;Few-shot
+ollama;fewshot;Descritiva;20,17;25,41;1,66;362,0;Few-shot
+ollama;globale;Booleana;21,74;29,13;1,45;138,0;GlobalE
+ollama;globale;Descritiva;24,31;28,01;1,66;362,0;GlobalE
+ollama;kate;Booleana;32,61;38,52;0,72;138,0;KATE
+ollama;kate;Descritiva;41,44;39,49;0,83;362,0;KATE
+ollama;locale;Booleana;20,29;18,82;1,45;138,0;LocalE
+ollama;locale;Descritiva;21,82;27,05;1,93;362,0;LocalE
+ollama;ordenacao;Booleana;39,13;45,61;0,0;138,0;Ordenação (KATE invertido)
+ollama;ordenacao;Descritiva;39,23;38,55;1,1;362,0;Ordenação (KATE invertido)
+ollama;sg_icl;Booleana;16,67;24,76;0,72;138,0;SG-ICL
+ollama;sg_icl;Descritiva;17,68;24,49;1,1;362,0;SG-ICL
+ollama;zeroshot;Booleana;14,49;19,63;0,0;138,0;Zero-shot
+ollama;zeroshot;Descritiva;31,77;30,65;0,0;362,0;Zero-shot
+qwen;ape;Booleana;77,54;76,15;0,0;138,0;APE
+qwen;ape;Descritiva;82,87;78,83;0,0;362,0;APE
+qwen;calibracao;Booleana;77,54;77,86;0,0;138,0;Calibração
+qwen;calibracao;Descritiva;81,49;80,73;0,0;362,0;Calibração
+qwen;fewshot;Booleana;81,88;81,57;0,0;138,0;Few-shot
+qwen;fewshot;Descritiva;83,98;83,03;0,0;362,0;Few-shot
+qwen;globale;Booleana;81,88;82,21;0,0;138,0;GlobalE
+qwen;globale;Descritiva;85,36;84,22;0,0;362,0;GlobalE
+qwen;kate;Booleana;85,51;89,17;0,0;138,0;KATE
+qwen;kate;Descritiva;85,08;83,93;0,0;362,0;KATE
+qwen;locale;Booleana;81,88;80,01;0,0;138,0;LocalE
+qwen;locale;Descritiva;83,7;82,23;0,0;362,0;LocalE
+qwen;ordenacao;Booleana;85,51;89,46;0,0;138,0;Ordenação (KATE invertido)
+qwen;ordenacao;Descritiva;84,81;83,57;0,0;362,0;Ordenação (KATE invertido)
+qwen;sg_icl;Booleana;83,33;84,2;0,0;138,0;SG-ICL
+qwen;sg_icl;Descritiva;81,22;76,97;0,0;362,0;SG-ICL
+qwen;zeroshot;Booleana;78,99;79,02;0,0;138,0;Zero-shot
+qwen;zeroshot;Descritiva;82,32;77,65;0,0;362,0;Zero-shot

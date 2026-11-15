@@ -1,0 +1,18 @@
+# Chaves de API (NUNCA enviar)
+.env
+
+# Ambiente e editor
+venv/
+.venv/
+__pycache__/
+*.pyc
+.vscode/
+
+# Arquivos auxiliares locais
+Claude outputs/
+
+# Livro original (direitos da Embrapa): baixe no site da Embrapa e coloque em dados/brutos/
+dados/brutos/
+dados/processados/texto_bruto_paginas.json
+dados/processados/perguntas_estruturadas_parcial.json
+dados/processados/prompts_exemplos/

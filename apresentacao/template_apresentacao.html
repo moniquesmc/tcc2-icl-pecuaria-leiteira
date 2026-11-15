@@ -1,0 +1,1187 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TCC II – Monique Machado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --fundo:#F6F7F5; --papel:#FFFFFF; --tinta:#0F2A30; --tinta2:#3E5258; --suave:#6A7B80; --linha:#E1E6E6; --linha2:#EEF2F1;
+  --acento:#00809A; --acento-esc:#005F72; --acento-claro:#D6EEF1; --acento-bg:#EAF6F7;
+  --coral:#D9573B; --coral-bg:#FBEDE9; --ambar:#B86E00; --ambar-bg:#FFF4E2;
+  --escuro:#0D2328; --escuro2:#16343B; --neutro:#A9B6BA;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#081417;overflow:hidden;font-family:'Inter',system-ui,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:var(--fundo)}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;gap:32px;background:var(--fundo);color:var(--tinta);
+  padding:120px 120px 110px;opacity:0;visibility:hidden;transform:translateX(24px);transition:opacity .35s ease,transform .35s ease,visibility 0s .35s}
+.slide.ativo{opacity:1;visibility:visible;transform:none;transition:opacity .35s ease,transform .35s ease}
+.slide.escuro{background:radial-gradient(1200px 700px at 85% 15%,#16434B 0%,var(--escuro) 60%);color:#EEF4F3}
+aside.nota{display:none}
+
+/* topo: seção e progresso */
+.topo{position:absolute;left:120px;right:120px;top:44px;display:flex;justify-content:space-between;align-items:center;font-size:20px;color:var(--suave);font-weight:500}
+.topo .secoes{display:flex;gap:26px}
+.topo .secoes span{opacity:.55}
+.topo .secoes span.on{opacity:1;color:var(--acento);font-weight:700}
+.escuro .topo{color:#8FB0B4}.escuro .topo .secoes span.on{color:#7FD3DE}
+.barra{position:absolute;left:0;bottom:0;height:6px;background:var(--acento);transition:width .35s ease}
+.rod{position:absolute;left:120px;right:120px;bottom:40px;display:flex;justify-content:space-between;font-size:19px;color:var(--suave)}
+.escuro .rod{color:#8FB0B4}
+
+/* tipografia */
+.eyebrow{font-size:22px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--acento);margin:0}
+.escuro .eyebrow{color:#7FD3DE}
+h1{font-size:80px;line-height:1.06;margin:0;font-weight:800;letter-spacing:-.02em}
+h2{font-size:54px;line-height:1.1;margin:0;font-weight:800;letter-spacing:-.015em;max-width:1600px}
+h3{font-size:30px;line-height:1.2;margin:0;font-weight:700}
+p,li{font-size:27px;line-height:1.45;margin:0}
+ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:10px}
+li::marker{color:var(--acento)}
+b,strong{font-weight:700}
+.suave{color:var(--tinta2)}
+.escuro .suave{color:#B9CFD1}
+.peq{font-size:21px}
+.ph{color:var(--ambar);font-weight:700}
+.cab{display:flex;flex-direction:column;gap:14px}
+
+/* grades e cartões */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.card{background:var(--papel);border:1px solid var(--linha);border-radius:20px;padding:30px 32px;display:flex;flex-direction:column;gap:12px;box-shadow:0 1px 2px rgba(15,42,48,.04),0 8px 24px rgba(15,42,48,.05)}
+.card h3{color:var(--tinta)}
+.card .peq{font-size:23px}
+.card .tag{align-self:flex-start;font-size:18px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:999px;background:var(--acento-bg);color:var(--acento-esc)}
+.card.coral .tag{background:var(--coral-bg);color:#A63A22}
+.card.ambar .tag{background:var(--ambar-bg);color:var(--ambar)}
+.card.borda-acento{border-top:6px solid var(--acento)}
+.card.borda-coral{border-top:6px solid var(--coral)}
+.card.borda-ambar{border-top:6px solid #E09A20}
+.num{font-size:64px;font-weight:800;color:var(--acento);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.leitura{display:flex;gap:20px;align-items:flex-start;background:var(--acento-bg);border-left:6px solid var(--acento);border-radius:0 16px 16px 0;padding:22px 30px}
+.leitura .ic{font-size:20px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--acento-esc);white-space:nowrap;padding-top:4px}
+.leitura p{font-size:26px}
+.escuro .card{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);box-shadow:none}
+.escuro .card h3{color:#fff}
+.chip{display:inline-flex;align-items:center;gap:8px;font-size:22px;font-weight:600;padding:8px 16px;border-radius:12px;background:var(--papel);border:1px solid var(--linha)}
+.chip i{font-style:normal;font-size:17px;font-weight:700;color:var(--suave)}
+
+/* tabelas */
+table.t{border-collapse:separate;border-spacing:0;width:100%;font-size:24px;background:var(--papel);border:1px solid var(--linha);border-radius:16px;overflow:hidden}
+table.t th{background:var(--escuro);color:#EEF4F3;text-align:left;padding:14px 18px;font-weight:600;font-size:21px;letter-spacing:.02em}
+table.t td{padding:11px 18px;border-top:1px solid var(--linha2)}
+table.t td.n,table.t th.n{text-align:right;font-variant-numeric:tabular-nums}
+table.t td.neg{font-weight:700;color:var(--acento-esc);background:var(--acento-claro)}
+table.t td.melhor{font-weight:800;color:#fff;background:var(--acento)}
+table.t td.fraco{color:var(--suave)}
+
+/* abas */
+.abas{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.abas .rot{font-size:19px;color:var(--suave);margin-right:6px;font-weight:600;min-width:90px}
+.abas button{font:inherit;font-size:20px;font-weight:500;padding:8px 18px;border-radius:999px;border:1px solid var(--linha);background:var(--papel);cursor:pointer;color:var(--tinta);transition:all .15s}
+.abas button:hover{border-color:var(--acento)}
+.abas button.on{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+
+/* prompt */
+pre.prompt{font-family:'JetBrains Mono',monospace;font-size:21px;line-height:1.55;background:#0B1C21;color:#DDEBED;padding:30px 34px;border-radius:18px;margin:0;white-space:pre-wrap}
+pre.prompt .i{color:#9FB3B8}
+pre.prompt .d{color:#7FD3DE}
+pre.prompt .q{color:#FFB199}
+pre.prompt .c{color:#FFD58A}
+ol.passos{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:8px}
+ol.passos li{font-size:22px;line-height:1.4}
+ol.passos li::marker{color:var(--acento);font-weight:700}
+
+/* matriz */
+table.cm{border-collapse:separate;border-spacing:3px;font-size:20px;font-variant-numeric:tabular-nums}
+table.cm th{font-weight:600;padding:2px 6px;color:var(--suave);font-size:19px}
+table.cm th.lin{text-align:right;white-space:nowrap;padding-right:12px;color:var(--tinta2)}
+table.cm td{width:62px;height:44px;text-align:center;border-radius:6px;cursor:default;background:#fff}
+table.cm td.rec{width:86px;font-weight:700;color:var(--tinta2);background:transparent}
+table.cm td.inv{background:#F1F2F0}
+.aviso{font-size:24px;color:var(--ambar);background:var(--ambar-bg);border:1px solid #F3D7A6;border-radius:12px;padding:16px 22px}
+.dica{position:absolute;pointer-events:none;background:var(--escuro);color:#fff;font-size:19px;line-height:1.4;padding:10px 14px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.25);opacity:0;transition:opacity .1s;z-index:5;max-width:520px}
+
+/* pergunta exemplo */
+.q{font-size:28px;font-weight:700;line-height:1.3}
+.par{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:21px}
+.pill{font-size:19px;font-weight:700;padding:4px 12px;border-radius:999px}
+.pill.ok{background:var(--acento-claro);color:var(--acento-esc)}
+.pill.err{background:var(--coral-bg);color:#A63A22}
+
+/* controles e notas */
+#controles{position:fixed;right:16px;bottom:14px;display:flex;gap:6px;align-items:center;font:14px Inter,Arial,sans-serif;color:#BFD8D5;opacity:.3;transition:opacity .2s;z-index:20}
+#controles:hover{opacity:1}
+#controles button{background:#1C3A41;color:#E6F1F3;border:0;border-radius:6px;padding:6px 10px;cursor:pointer;font:inherit}
+#notas{position:fixed;left:0;right:0;bottom:0;max-height:42vh;overflow:auto;background:rgba(8,20,23,.96);color:#E9F2F2;font:18px/1.55 Inter,Arial,sans-serif;padding:16px 28px 22px;display:none;z-index:15;border-top:3px solid var(--acento)}
+#notas.on{display:block}
+#notas .cabn{display:flex;justify-content:space-between;color:#8FB0B4;font-size:15px;margin-bottom:8px;font-weight:600;letter-spacing:.04em}
+#notas .tempo b{color:#7FD3DE}
+#notas .tempo .atrasado{color:#FFB199}
+@media print{#controles,#notas{display:none}}
+ol.passos li.off{opacity:.35}
+ol.passos li.on{color:var(--tinta);font-weight:600}
+.vx-linha{display:flex;align-items:center;gap:14px}
+.vx-seta{font-size:40px;color:var(--suave);line-height:1}
+.vx-seta.vx-baixo{text-align:center;margin:6px 0}
+.vx-caixa{border-radius:14px;padding:14px 18px;background:var(--papel);border:1px solid var(--linha)}
+.vx-caixa.vx-coral{background:var(--coral-bg);border-color:#F2C6BA}
+.vx-tit{font-size:17px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--suave);margin-bottom:6px}
+.vx-caixa p{font-size:22px}
+.vx-q{font-weight:700;font-size:28px}
+.vx-llm{flex:1;background:var(--escuro);color:#EEF4F3;border-radius:14px;padding:14px 20px}
+.vx-llm p{font-size:22px}
+.vx-grade2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vx-lista{display:flex;flex-direction:column;gap:8px}
+.vx-ex{background:var(--papel);border:1px solid var(--linha);border-radius:10px;padding:10px 14px;font-size:20px;line-height:1.35}
+.vx-cat{display:inline-block;font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--acento-esc);background:var(--acento-bg);border-radius:6px;padding:2px 8px;margin-right:10px}
+.vx-chips{display:flex;flex-wrap:wrap;gap:6px}
+.vx-chip{font-size:17px;font-weight:600;padding:5px 9px;border-radius:7px;background:#EEF2F1;color:var(--tinta2)}
+.vx-chip.on{background:var(--coral);color:#fff}
+.vx-ordem{display:flex;align-items:center;gap:12px}
+.vx-on{width:110px;font-size:18px;font-weight:700;color:var(--suave)}
+.vx-barras{display:flex;flex-direction:column;gap:8px}
+.vx-b{display:grid;grid-template-columns:200px 1fr 70px;align-items:center;gap:12px}
+.vx-br{font-size:20px;color:var(--tinta2);text-align:right}
+.vx-br.on,.vx-bv.on{font-weight:800;color:var(--tinta)}
+.vx-bt{height:24px;background:#EEF2F1;border-radius:5px;overflow:hidden;display:block}
+.vx-bt span{display:block;height:100%;border-radius:5px}
+.vx-bv{font-size:20px;color:var(--tinta2);font-variant-numeric:tabular-nums}
+.vx-hist{background:var(--papel);border:1px solid var(--linha);border-radius:14px;padding:16px 20px;flex:1}
+.vx-hbars{display:flex;align-items:flex-end;gap:10px;height:200px}
+.vx-hc{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%}
+.vx-hb{width:38px;border-radius:5px 5px 0 0;display:block}
+.vx-hn{font-size:17px;font-weight:700}
+.vx-hl{font-size:15px;color:var(--suave)}
+
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ===================================================== 1 CAPA -->
+<section class="slide escuro" data-secao="0" data-min="0.44" style="justify-content:space-between;padding:150px 140px 120px">
+  <div class="cab">
+    <p class="eyebrow">Trabalho de Conclusão de Curso II · IFG Câmpus Anápolis</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:34px">
+    <h1 style="max-width:1580px;font-size:86px">Estudo comparativo de técnicas de <span style="color:#7FD3DE">In-Context Learning</span> em LLMs aplicado à pecuária leiteira</h1>
+    <div style="display:flex;gap:16px">
+      <span class="chip" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:#fff">9 técnicas</span>
+      <span class="chip" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:#fff">4 modelos de linguagem</span>
+      <span class="chip" style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);color:#fff">500 perguntas da Embrapa</span>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-end">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <p style="font-size:34px;font-weight:700">Monique Silva Machado</p>
+      <p class="suave" style="font-size:25px">Orientador: Prof. Dr. Sergio Daniel Carvalho Canuto</p>
+      <p class="suave" style="font-size:25px">Banca: Prof. Me. Alexandre Bellezi José · Prof. Dr. Luiz Fernando Loja</p>
+    </div>
+    <p class="suave" style="font-size:25px">Anápolis · <span class="ph">[data da defesa]</span></p>
+  </div>
+  <aside class="nota">Bom dia. Sou Monique Silva Machado e apresento meu Trabalho de Conclusão de Curso: um estudo comparativo de técnicas de aprendizado em contexto, o In-Context Learning, em grandes modelos de linguagem, aplicado à pecuária leiteira. Comparei nove técnicas em quatro modelos de linguagem para classificar as 500 perguntas do manual da Embrapa sobre gado de leite.</aside>
+</section>
+
+<!-- ===================================================== 2 ROTEIRO -->
+<section class="slide" data-secao="0" data-min="0.13">
+  <div class="cab"><p class="eyebrow">Roteiro</p><h2>O caminho desta apresentação</h2></div>
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:30px;position:relative">
+    <div style="position:absolute;left:8%;right:8%;top:38px;height:4px;background:var(--linha)"></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;position:relative"><span class="num" style="background:var(--fundo);padding:0 18px">01</span><h3>Problema e objetivo</h3><p class="suave peq">Por que classificar a dúvida do produtor</p></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;position:relative"><span class="num" style="background:var(--fundo);padding:0 18px">02</span><h3>As 9 técnicas</h3><p class="suave peq">Taxonomia, prompt e como cada uma funciona</p></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;position:relative"><span class="num" style="background:var(--fundo);padding:0 18px">03</span><h3>Método</h3><p class="suave peq">Base, protocolo e modelos</p></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;position:relative"><span class="num" style="background:var(--fundo);padding:0 18px">04</span><h3>Resultados</h3><p class="suave peq">Desempenho, significância e erros</p></div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;position:relative"><span class="num" style="background:var(--fundo);padding:0 18px">05</span><h3>Conclusões</h3><p class="suave peq">Limitações e próximos passos</p></div>
+  </div>
+  <aside class="nota">Vou apresentar o problema e o objetivo, as nove técnicas, o método, os resultados e as conclusões.</aside>
+</section>
+
+<!-- ===================================================== 3 PROBLEMA -->
+<section class="slide" data-secao="1" data-min="0.86">
+  <div class="cab"><p class="eyebrow">01 · Problema e objetivo</p><h2>Entender o tema da dúvida é o primeiro passo para responder bem</h2></div>
+  <div class="g2" style="gap:22px">
+    <div class="card borda-acento"><span class="tag">Contexto</span><p class="suave">O manual <b>“500 Perguntas, 500 Respostas – Gado de Leite”</b>, da Embrapa, reúne o conhecimento técnico oficial da atividade em 11 capítulos.</p></div>
+    <div class="card borda-coral coral"><span class="tag">Problema 1</span><p class="suave">LLMs genéricos erram em domínios especializados. Antes de responder (por exemplo, com RAG), é preciso saber <b>de qual assunto</b> a dúvida trata.</p></div>
+    <div class="card borda-coral coral"><span class="tag">Problema 2</span><p class="suave">As técnicas de <b>aprendizado em contexto</b> são populares e aplicadas em toda parte, mas sua qualidade <b>raramente é avaliada com cuidado</b> em um domínio específico.</p></div>
+    <div class="card borda-ambar ambar"><span class="tag">Hipótese</span><p class="suave">A forma de montar o contexto do prompt muda o desempenho do modelo, <b>sem retreiná-lo</b>, e essa diferença precisa ser medida.</p></div>
+  </div>
+  <div class="leitura"><span class="ic">Objetivo</span><p>Analisar e comparar técnicas de In-Context Learning na categorização das dúvidas de pecuária leiteira nas <b>11 categorias</b> do manual da Embrapa, em modelos de linguagem de portes diferentes.</p></div>
+  <aside class="nota">O manual da Embrapa reúne o conhecimento técnico oficial da pecuária leiteira em 11 capítulos. Há dois problemas. O primeiro: modelos de linguagem genéricos erram em domínios especializados, e antes de responder é preciso saber de que assunto a dúvida trata, por exemplo para buscar o trecho certo do manual. O segundo: as técnicas de aprendizado em contexto são muito populares e aplicadas em toda parte, mas raramente alguém avalia com cuidado a qualidade delas num domínio específico. Minha hipótese é que a forma de montar o contexto muda o desempenho sem retreinar o modelo. O objetivo foi comparar essas técnicas na classificação das dúvidas nas 11 categorias.</aside>
+</section>
+
+<!-- ===================================================== 4 O QUE É ICL -->
+<section class="slide" data-secao="1" data-min="0.56">
+  <div class="cab"><p class="eyebrow">01 · Conceito</p><h2>In-Context Learning: o modelo aprende pelos exemplos do prompt</h2></div>
+  <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:44px;align-items:center">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;gap:14px;align-items:stretch">
+        <div style="flex:1;display:flex;flex-direction:column;gap:10px">
+          <div style="background:#DDE5E7;border-radius:14px;padding:18px 22px"><p class="peq suave" style="font-weight:700">INSTRUÇÃO</p><p style="font-size:24px">“Classifique a dúvida em uma das 11 categorias…”</p></div>
+          <div style="background:var(--acento-claro);border-radius:14px;padding:18px 22px"><p class="peq" style="font-weight:700;color:var(--acento-esc)">EXEMPLOS (DEMONSTRAÇÕES)</p><p style="font-size:24px">Dúvida → Categoria · Dúvida → Categoria · …</p></div>
+          <div style="background:var(--coral-bg);border-radius:14px;padding:18px 22px"><p class="peq" style="font-weight:700;color:#A63A22">PERGUNTA NOVA</p><p style="font-size:24px">“O que é leite orgânico?” → <b>?</b></p></div>
+        </div>
+        <div style="display:flex;align-items:center;font-size:48px;color:var(--suave)">→</div>
+        <div style="width:250px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;background:var(--escuro);color:#fff;border-radius:18px;padding:24px;text-align:center">
+          <p style="font-size:24px;font-weight:700">LLM</p><p class="peq" style="color:#B9CFD1">pesos congelados</p>
+          <p style="font-size:22px;margin-top:16px;color:#7FD3DE;font-weight:700">Produção Orgânica de Leite</p>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:22px">
+      <div class="card"><h3>Sem treino</h3><p class="suave">Nada no modelo muda. Só o texto de entrada.</p></div>
+      <div class="card"><h3>Analogia</h3><p class="suave">É como mostrar a um colega alguns exercícios resolvidos antes de pedir que ele resolva um novo.</p></div>
+      <div class="card"><h3>A pergunta do trabalho</h3><p class="suave"><b>Quais</b> exemplos, em <b>que ordem</b> e com <b>que instrução</b> funcionam melhor?</p></div>
+    </div>
+  </div>
+  <aside class="nota">Aprendizado em contexto é quando o modelo aprende a tarefa pelos exemplos colocados no próprio prompt, sem treinamento. O prompt tem a instrução, os exemplos, também chamados de demonstrações, e a pergunta nova; os pesos do modelo não mudam. É como mostrar exercícios resolvidos a um colega antes de pedir que ele resolva um novo. A pergunta do trabalho é: quais exemplos, em que ordem e com que instrução funcionam melhor?</aside>
+</section>
+
+<!-- ===================================================== 5 TAXONOMIA -->
+<section class="slide" data-secao="2" data-min="0.65">
+  <div class="cab"><p class="eyebrow">02 · Fundamentação</p><h2>As 9 técnicas cobrem as três frentes da taxonomia de Dong et al. (2024)</h2></div>
+  <div style="display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:24px">
+    <div class="card borda-acento"><span class="tag">Demonstração</span>
+      <div class="g2" style="gap:18px">
+        <div style="display:flex;flex-direction:column;gap:10px"><p class="peq suave" style="font-weight:700">QUAIS EXEMPLOS</p>
+          <span class="chip">KATE <i>2.340</i></span><span class="chip">SG-ICL <i>114</i></span></div>
+        <div style="display:flex;flex-direction:column;gap:10px"><p class="peq suave" style="font-weight:700">EM QUE ORDEM</p>
+          <span class="chip">Ordenação <i>2.340</i></span><span class="chip">GlobalE · LocalE <i>2.111</i></span></div>
+      </div>
+    </div>
+    <div class="card borda-ambar ambar"><span class="tag">Instrução</span><p class="peq suave" style="font-weight:700">COMO PEDIR</p><span class="chip">APE <i>2.495</i></span></div>
+    <div class="card borda-coral coral"><span class="tag">Pontuação</span><p class="peq suave" style="font-weight:700">COMO DECIDIR</p><span class="chip">Calibração <i>2.681</i></span></div>
+  </div>
+  <div class="card" style="flex-direction:row;align-items:center;gap:24px;padding:22px 32px"><span class="tag">Linhas de base</span><span class="chip">Zero-shot <i>86.756</i></span><span class="chip">Few-shot <i>86.756</i></span><p class="suave peq">Brown et al. (2020): o artigo do GPT-3. Toda técnica é comparada a elas.</p></div>
+  <p class="suave peq">Números: citações no Google Acadêmico (consulta em 12/11/2026). KATE: Liu et al. (2022) · SG-ICL: Kim et al. (2022) · GlobalE/LocalE: Lu et al. (2022) · APE: Zhou et al. (2023) · Calibração: Zhao et al. (2021). Taxonomia: Dong et al. (2024), 4.139 citações.</p>
+  <aside class="nota">Para escolher as técnicas, usei a taxonomia de Dong e colegas, de 2024, que tem três frentes. A demonstração trata dos exemplos: quais usar, com KATE e SG-ICL, e em que ordem, com a Ordenação, o GlobalE e o LocalE. A instrução trata de como pedir a tarefa, com o APE. E a função de pontuação trata de como decidir a resposta, com a calibração contextual. Zero-shot e Few-shot são as linhas de base. Os números são as citações no Google Acadêmico.</aside>
+</section>
+
+<!-- ===================================================== 6 ESCOLHA -->
+<section class="slide" data-secao="2" data-min="0.34">
+  <div class="cab"><p class="eyebrow">02 · Justificativa</p><h2>Critério: técnicas populares, simples e que funcionam só no prompt</h2></div>
+  <div class="g3">
+    <div class="card borda-acento"><span class="num" style="font-size:52px">1</span><h3>Cobertura</h3><p class="suave">Ao menos uma técnica para cada frente da taxonomia de Dong et al. (2024).</p></div>
+    <div class="card borda-acento"><span class="num" style="font-size:52px">2</span><h3>Popularidade</h3><p class="suave">Todas com <b>mais de 100 citações</b> no Google Acadêmico: técnicas adotadas pela comunidade.</p></div>
+    <div class="card borda-acento"><span class="num" style="font-size:52px">3</span><h3>Simplicidade</h3><p class="suave">Funcionam só no prompt, <b>sem treinar o modelo</b>: baratas e reprodutíveis.</p></div>
+  </div>
+  <aside class="nota">O critério teve três pontos: cobrir as frentes da taxonomia; escolher técnicas populares, todas com mais de 100 citações, o que mostra adoção pela comunidade; e simples, que funcionam só no prompt, sem treinar o modelo. Isso deixa o experimento barato e reprodutível.</aside>
+</section>
+
+<!-- ===================================================== 10 PROMPT -->
+<section class="slide" data-secao="2" data-min="0.52">
+  <div class="cab"><p class="eyebrow">02 · Anatomia do prompt</p><h2>Todas as técnicas usam o mesmo molde; só muda o que entra nele</h2></div>
+  <div style="display:grid;grid-template-columns:1080px 1fr;gap:40px">
+<pre class="prompt"><span class="i">Classifique a dúvida do produtor rural em EXATAMENTE
+UMA das 11 categorias técnicas abaixo.
+Categorias válidas: Cria e Recria de Bezerras e Novilhas;
+Alimentação e Manejo de Vacas e Touros; … (11 nomes)
+Responda APENAS com o nome de uma das categorias.</span>
+
+<span class="d">Exemplos:
+Dúvida: Como detectar a mastite subclínica?
+Categoria: Mastite e Qualidade do Leite
+…</span>
+
+<span class="q">Dúvida: O que é cio?
+Categoria:</span></pre>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="card"><h3 style="color:var(--tinta2)">Instrução e categorias</h3><p class="suave peq">As categorias entram <b>só pelo nome</b> do capítulo, separadas por “;”, sem número nem descrição. Iguais em todas as técnicas; o APE troca só a 1ª frase.</p></div>
+      <div class="card"><h3 style="color:var(--acento)">Exemplos</h3><p class="suave peq">Quais, quantos e em que ordem: é aqui que a maioria das técnicas atua.</p></div>
+      <div class="card"><h3 style="color:var(--coral)">Pergunta por último</h3><p class="suave peq">A dúvida a classificar fica sempre no final.</p></div>
+    </div>
+  </div>
+  <aside class="nota">Para a comparação ser justa, todas as técnicas usam o mesmo molde de prompt. Primeiro, a instrução e as 11 categorias, que entram só pelo nome, sempre na mesma ordem. Depois, os exemplos, que é onde a maioria das técnicas atua. E, no final, a pergunta. Agora mostro cada técnica com o prompt real enviado ao Qwen para a mesma pergunta: “O que é cio?”.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 1 ZERO-SHOT -->
+<section class="slide" data-secao="2" data-min="0.31" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 1 de 9 · Linha de base</p><h2>Zero-shot <span style="font-weight:500;color:var(--suave);font-size:34px">· Brown et al. (2020)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-acento" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">Nenhum exemplo: só a instrução e as 11 categorias. Mede o que o modelo já sabe.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="">Monta o prompt-base, sem exemplos.</li><li class="">Uma chamada por pergunta, com temperatura 0.</li><li class="">A resposta é comparada com os 11 nomes; se nenhum aparece, conta como erro.</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos</i> 0</span><span class="chip"><i>Chamadas</i> 1</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">PROMPT REAL · QWEN3.8 27B · FOLD 1</p>
+      <pre class="prompt" style="font-size:21px;line-height:1.5"><span class="i">Classifique a dúvida do produtor rural em EXATAMENTE UMA das</span>
+<span class="i">11 categorias técnicas abaixo.</span>
+<span class="i">Categorias válidas: Cria e Recria de Bezerras e Novilhas;</span>
+<span class="i">Alimentação e Manejo de Vacas e Touros; … (11 nomes)</span>
+<span class="i">Responda APENAS com o nome de uma das categorias.</span>
+
+<span class="q">Dúvida: O que é cio?</span>
+<span class="q">Categoria:</span></pre><p class="peq"><b>Resposta do modelo:</b> <span class="pill ok">Reprodução ✓</span></p>
+    </div>
+  </div>
+  <aside class="nota">Zero-shot: nenhum exemplo, só a instrução, as 11 categorias e a pergunta. Mede o que o modelo já sabe. Vou usar a mesma pergunta em todas as técnicas, “O que é cio?”, para mostrar o que muda no prompt.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 2 FEW-SHOT -->
+<section class="slide" data-secao="2" data-min="0.32" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 2 de 9 · Linha de base</p><h2>Few-shot <span style="font-weight:500;color:var(--suave);font-size:34px">· Brown et al. (2020)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-acento" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">Um exemplo de cada categoria, sorteado do treino.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="">Sorteia 1 pergunta por categoria entre as 300 do treino (semente 42 + nº do fold).</li><li class="">Os mesmos 11 exemplos, na mesma ordem, valem para as 100 perguntas de teste do fold.</li><li class="">GlobalE, LocalE e Calibração usam esses mesmos exemplos.</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos</i> 11 (1 por categoria)</span><span class="chip"><i>Seleção</i> sorteio com semente fixa</span><span class="chip"><i>Chamadas</i> 1</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">PROMPT REAL · QWEN3.8 27B · FOLD 1</p>
+      <pre class="prompt" style="font-size:19px;line-height:1.5"><span class="i">… (instrução e 11 categorias, igual ao Zero-shot)</span>
+
+<span class="d">Exemplos:</span>
+<span class="d">Dúvida: Durante a fase de colostro, deve-se ordenhar a vaca…</span>
+<span class="d">Categoria: Alimentação e Manejo de Vacas e Touros</span>
+
+<span class="d">Dúvida: Quais as características da braquiária Tanner-grass?</span>
+<span class="d">Categoria: Recursos Forrageiros</span>
+
+<span class="d">… mais 9 exemplos, um de cada categoria …</span>
+
+<span class="q">Dúvida: O que é cio?</span>
+<span class="q">Categoria:</span></pre><p class="peq"><b>Resposta do modelo:</b> <span class="pill ok">Reprodução ✓</span></p>
+    </div>
+  </div>
+  <aside class="nota">No Few-shot, sorteio uma pergunta de cada categoria do treino, com semente fixa. Os mesmos onze exemplos valem para todo o fold, e GlobalE, LocalE e Calibração usam exatamente esses exemplos. Assim, a diferença entre eles vem só da técnica.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 3 KATE -->
+<section class="slide" data-secao="2" data-min="0.48" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 3 de 9 · Demonstração · seleção</p><h2>KATE <span style="font-weight:500;color:var(--suave);font-size:34px">· Liu et al. (2022)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-acento" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">Usar como exemplos as perguntas do treino com maior similaridade semântica com a dúvida.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="">Cada pergunta vira um vetor (embedding) com o modelo multilíngue paraphrase-MiniLM.</li><li class="">Mede a similaridade semântica (cosseno) entre a dúvida e as 300 do treino.</li><li class="">Os 5 mais parecidos entram em ordem crescente: o mais parecido fica por último.</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos</i> 5 vizinhos</span><span class="chip"><i>Ordem</i> mais parecido por último</span><span class="chip"><i>Chamadas</i> 1</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">PROMPT REAL · QWEN3.8 27B · FOLD 1</p>
+      <pre class="prompt" style="font-size:18px;line-height:1.5"><span class="i">… (instrução e 11 categorias)</span>
+<span class="d">Exemplos:</span>
+<span class="d">Dúvida: O que é a fasciolose?</span>
+<span class="d">Categoria: Saúde Animal</span>
+<span class="c">  similaridade semântica 0,58</span>
+<span class="d">Dúvida: O que é cisticercose bovina?</span>
+<span class="d">Categoria: Saúde Animal</span>
+<span class="c">  similaridade semântica 0,62</span>
+<span class="d">Dúvida: O que é fenação?</span>
+<span class="d">Categoria: Recursos Forrageiros</span>
+<span class="c">  similaridade semântica 0,63</span>
+<span class="d">Dúvida: O que é sobreordenha?</span>
+<span class="d">Categoria: Mastite e Qualidade do Leite</span>
+<span class="c">  similaridade semântica 0,74</span>
+<span class="d">Dúvida: O que é manqueira?</span>
+<span class="d">Categoria: Saúde Animal</span>
+<span class="c">  similaridade semântica 0,86</span>
+
+<span class="q">Dúvida: O que é cio?</span>
+<span class="q">Categoria:</span></pre><p class="peq"><b>Resposta do modelo:</b> <span class="pill ok">Reprodução ✓</span></p>
+    </div>
+  </div>
+  <aside class="nota">O KATE escolhe os exemplos por similaridade semântica: cada pergunta vira um vetor, e pego as cinco do treino mais parecidas com a dúvida, com a mais parecida por último. Repare que, para “O que é cio?”, vieram perguntas “O que é…?” de outros temas. A similaridade também capta a forma da frase, o que explica alguns erros que vou mostrar.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 4 ORDENAÇÃO -->
+<section class="slide" data-secao="2" data-min="0.33" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 4 de 9 · Demonstração · ordem</p><h2>Ordenação <span style="font-weight:500;color:var(--suave);font-size:34px">· Liu et al. (2022)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-acento" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">Os mesmos 5 exemplos do KATE, em ordem inversa: o mais parecido primeiro.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="">Reutiliza os 5 vizinhos do KATE.</li><li class="">Inverte a ordem: o mais parecido vai para o início, longe da pergunta.</li><li class="">Todo o resto é igual ao KATE: só a posição muda.</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos</i> 5 (os do KATE)</span><span class="chip"><i>Ordem</i> mais parecido primeiro</span><span class="chip"><i>Chamadas</i> 1</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">PROMPT REAL · QWEN3.8 27B · FOLD 1</p>
+      <pre class="prompt" style="font-size:18px;line-height:1.5"><span class="i">… (instrução e 11 categorias)</span>
+<span class="d">Exemplos:</span>
+<span class="d">Dúvida: O que é manqueira?</span>
+<span class="d">Categoria: Saúde Animal</span>
+<span class="c">  similaridade semântica 0,86</span>
+<span class="d">Dúvida: O que é sobreordenha?</span>
+<span class="d">Categoria: Mastite e Qualidade do Leite</span>
+<span class="c">  similaridade semântica 0,74</span>
+<span class="d">Dúvida: O que é fenação?</span>
+<span class="d">Categoria: Recursos Forrageiros</span>
+<span class="c">  similaridade semântica 0,63</span>
+<span class="d">Dúvida: O que é cisticercose bovina?</span>
+<span class="d">Categoria: Saúde Animal</span>
+<span class="c">  similaridade semântica 0,62</span>
+<span class="d">Dúvida: O que é a fasciolose?</span>
+<span class="d">Categoria: Saúde Animal</span>
+<span class="c">  similaridade semântica 0,58</span>
+
+<span class="q">Dúvida: O que é cio?</span>
+<span class="q">Categoria:</span></pre><p class="peq"><b>Resposta do modelo:</b> <span class="pill ok">Reprodução ✓</span></p>
+    </div>
+  </div>
+  <aside class="nota">A Ordenação é um teste controlado da ordem: os mesmos cinco exemplos do KATE, com o mais parecido no início. Se o resultado mudar em relação ao KATE, a causa é só a posição dos exemplos, o chamado viés de recência.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 5 SG-ICL PASSO 1 -->
+<section class="slide" data-secao="2" data-min="0.31" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 5 de 9 · Demonstração · seleção · passo 1 de 3</p><h2>SG-ICL <span style="font-weight:500;color:var(--suave);font-size:34px">· Kim et al. (2022)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-acento" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">O próprio modelo cria os exemplos, inspirados na pergunta.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="on">Etapa 1: o modelo cria uma dúvida nova para cada categoria, no estilo da pergunta.</li><li class="off">Os exemplos criados são embaralhados (semente fixa).</li><li class="off">Etapa 2: o modelo classifica a pergunta usando esses exemplos.</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos</i> 11, criados pelo modelo</span><span class="chip"><i>Chamadas</i> 2</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">ETAPA 1 · DADOS REAIS · QWEN3.8 27B · FOLD 1</p>
+      <div class="vx-linha"><div class="vx-caixa vx-coral" style="flex:1;min-width:0;"><p class="vx-tit">Pergunta</p><p class="vx-q">O que é cio?</p></div><div class="vx-seta">→</div><div class="vx-llm"><p class="vx-tit" style="color:#7FD3DE">LLM</p><p>“Crie 1 dúvida nova para cada uma das 11 categorias, no mesmo estilo.”</p></div></div><div class="vx-seta vx-baixo">↓</div><div class="vx-grade2"><div class="vx-ex"><span class="vx-cat">Cria e Recria</span>Qual a idade ideal para desmamar a bezerra?</div><div class="vx-ex"><span class="vx-cat">Alimentação</span>Como calcular a quantidade de silagem por dia?</div><div class="vx-ex"><span class="vx-cat">Recursos Forrageiros</span>Qual a melhor época para plantar capim-mombaça?</div><div class="vx-ex"><span class="vx-cat">Reprodução</span>Qual o intervalo ideal entre a inseminação e a cobertura?</div><div class="vx-ex"><span class="vx-cat">Saúde Animal</span>Como prevenir a verminose no rebanho leiteiro?</div><div class="vx-ex"><span class="vx-cat">Gerenciamento</span>Como calcular o custo de produção por litro de leite?</div></div><p class="peq suave" style="text-align:center">… e mais 5 categorias</p>
+    </div>
+  </div>
+  <aside class="nota">No SG-ICL, o próprio modelo cria os exemplos. Na primeira chamada, peço a ele uma dúvida nova para cada categoria, no estilo da pergunta do produtor. Estas são dúvidas reais que o Qwen criou para “O que é cio?”.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 5 SG-ICL PASSO 2 -->
+<section class="slide" data-secao="2" data-min="0.15" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 5 de 9 · Demonstração · seleção · passo 2 de 3</p><h2>SG-ICL <span style="font-weight:500;color:var(--suave);font-size:34px">· Kim et al. (2022)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-acento" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">O próprio modelo cria os exemplos, inspirados na pergunta.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="off">Etapa 1: o modelo cria uma dúvida nova para cada categoria, no estilo da pergunta.</li><li class="on">Os exemplos criados são embaralhados (semente fixa).</li><li class="off">Etapa 2: o modelo classifica a pergunta usando esses exemplos.</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos</i> 11, criados pelo modelo</span><span class="chip"><i>Chamadas</i> 2</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">EMBARALHAR · QWEN3.8 27B · FOLD 1</p>
+      <div class="vx-linha" style="align-items:center"><div class="vx-caixa vx-claro" style="flex:1;min-width:0;"><p class="vx-tit">Ordem em que foram criadas</p><div class="vx-chips"><span class="vx-chip">Cria</span><span class="vx-chip">Alim.</span><span class="vx-chip">Forr.</span><span class="vx-chip">Repr.</span><span class="vx-chip">Genét.</span><span class="vx-chip">Saúde</span><span class="vx-chip">Mast.</span><span class="vx-chip">Orgân.</span><span class="vx-chip">Inst.</span><span class="vx-chip">Bem-est.</span><span class="vx-chip on">Geren.</span></div></div><div class="vx-seta">→</div><div class="vx-caixa vx-claro" style="flex:1;min-width:0;"><p class="vx-tit">Ordem usada no prompt</p><div class="vx-chips"><span class="vx-chip">Orgân.</span><span class="vx-chip">Forr.</span><span class="vx-chip">Cria</span><span class="vx-chip">Alim.</span><span class="vx-chip on">Geren.</span><span class="vx-chip">Genét.</span><span class="vx-chip">Saúde</span><span class="vx-chip">Mast.</span><span class="vx-chip">Bem-est.</span><span class="vx-chip">Inst.</span><span class="vx-chip">Repr.</span></div></div></div><p class="peq suave" style="margin-top:22px">Sem embaralhar, a última categoria da lista (Gerenciamento) ficaria sempre colada na pergunta. A semente fixa garante a mesma ordem a cada execução.</p>
+    </div>
+  </div>
+  <aside class="nota">Depois, embaralho esses exemplos com semente fixa, para a última categoria da lista não ficar sempre colada na pergunta.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 5 SG-ICL PASSO 3 -->
+<section class="slide" data-secao="2" data-min="0.19" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 5 de 9 · Demonstração · seleção · passo 3 de 3</p><h2>SG-ICL <span style="font-weight:500;color:var(--suave);font-size:34px">· Kim et al. (2022)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-acento" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">O próprio modelo cria os exemplos, inspirados na pergunta.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="off">Etapa 1: o modelo cria uma dúvida nova para cada categoria, no estilo da pergunta.</li><li class="off">Os exemplos criados são embaralhados (semente fixa).</li><li class="on">Etapa 2: o modelo classifica a pergunta usando esses exemplos.</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos</i> 11, criados pelo modelo</span><span class="chip"><i>Chamadas</i> 2</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">ETAPA 2 · PROMPT REAL · QWEN3.8 27B · FOLD 1</p>
+      <pre class="prompt" style="font-size:19px;line-height:1.5"><span class="i">… (instrução e 11 categorias)</span>
+<span class="d">Exemplos:</span>
+<span class="d">Dúvida: Qual o intervalo ideal entre a inseminação e a cobertura?</span>
+<span class="d">Categoria: Reprodução</span>
+
+<span class="d">Dúvida: Como prevenir a verminose no rebanho leiteiro?</span>
+<span class="d">Categoria: Saúde Animal</span>
+
+<span class="d">… mais 9 exemplos criados pelo modelo …</span>
+
+<span class="q">Dúvida: O que é cio?</span>
+<span class="q">Categoria:</span></pre><p class="peq"><b>Resposta do modelo:</b> <span class="pill ok">Reprodução ✓</span></p>
+    </div>
+  </div>
+  <aside class="nota">Na segunda chamada, o modelo classifica a pergunta usando os exemplos que ele mesmo criou. Por isso o SG-ICL custa duas chamadas por pergunta.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 6 APE PASSO 1 -->
+<section class="slide" data-secao="2" data-min="0.31" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 6 de 9 · Instrução · passo 1 de 3</p><h2>APE <span style="font-weight:500;color:var(--suave);font-size:34px">· Zhou et al. (2023)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-ambar ambar" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">O modelo escreve a instrução; a melhor é escolhida pelo desempenho.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="on">Gera 5 instruções candidatas: o modelo lê pares pergunta → categoria e diz qual instrução os explicaria.</li><li class="off">Testa cada candidata em 20 perguntas da validação, sem exemplos.</li><li class="off">Usa a de maior acurácia no teste, no lugar da 1ª frase do prompt.</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos no teste</i> 0</span><span class="chip"><i>Chamadas extras</i> 105 por fold</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">GERAR CANDIDATAS · DADOS REAIS · QWEN3.8 27B · FOLD 1</p>
+      <div class="vx-linha"><div class="vx-caixa vx-claro" style="flex:1;min-width:0;"><p class="vx-tit">11 pares do treino</p><p>Dúvida → Categoria<br>Dúvida → Categoria<br>…</p></div><div class="vx-seta">→</div><div class="vx-llm"><p class="vx-tit" style="color:#7FD3DE">LLM</p><p>“Qual foi a instrução que eu dei ao meu amigo?”</p></div></div><div class="vx-seta vx-baixo">↓</div><div class="vx-lista"><div class="vx-ex"><span class="vx-cat">#1</span>Classifique cada dúvida … selecionando a opção mais adequada entre as áreas…</div><div class="vx-ex"><span class="vx-cat">#2</span>Leia cada dúvida de produtor rural e escreva a categoria técnica correspondente.</div><div class="vx-ex"><span class="vx-cat">#3</span>A instrução foi classificar cada dúvida … selecionando a opção mais adequada…</div><div class="vx-ex"><span class="vx-cat">#4</span>Leia cada dúvida de produtor rural e escreva a categoria técnica correspondente.</div><div class="vx-ex"><span class="vx-cat">#5</span>Classifique cada dúvida … que melhor se encaixe no tema central da pergunta…</div></div>
+    </div>
+  </div>
+  <aside class="nota">O APE deixa o modelo escrever a instrução. Cinco vezes, mostro a ele onze pares de pergunta e categoria e pergunto: “qual foi a instrução que eu dei ao meu amigo?”. Estas são as cinco candidatas reais do Qwen.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 6 APE PASSO 2 -->
+<section class="slide" data-secao="2" data-min="0.13" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 6 de 9 · Instrução · passo 2 de 3</p><h2>APE <span style="font-weight:500;color:var(--suave);font-size:34px">· Zhou et al. (2023)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-ambar ambar" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">O modelo escreve a instrução; a melhor é escolhida pelo desempenho.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="off">Gera 5 instruções candidatas: o modelo lê pares pergunta → categoria e diz qual instrução os explicaria.</li><li class="on">Testa cada candidata em 20 perguntas da validação, sem exemplos.</li><li class="off">Usa a de maior acurácia no teste, no lugar da 1ª frase do prompt.</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos no teste</i> 0</span><span class="chip"><i>Chamadas extras</i> 105 por fold</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">TESTAR NA VALIDAÇÃO · QWEN3.8 27B · FOLD 1</p>
+      <p class="peq" style="font-weight:700;margin-bottom:12px">Acurácia de cada candidata em 20 perguntas da validação (Qwen, fold 1)</p><div class="vx-barras"><div class="vx-b"><span class="vx-br">Candidata #1</span><span class="vx-bt"><span style="width:80.0%;background:#A9B6BA"></span></span><span class="vx-bv">80%</span></div><div class="vx-b"><span class="vx-br on">Candidata #2</span><span class="vx-bt"><span style="width:85.0%;background:var(--acento)"></span></span><span class="vx-bv on">85%</span></div><div class="vx-b"><span class="vx-br">Candidata #3</span><span class="vx-bt"><span style="width:80.0%;background:#A9B6BA"></span></span><span class="vx-bv">80%</span></div><div class="vx-b"><span class="vx-br">Candidata #4</span><span class="vx-bt"><span style="width:85.0%;background:#A9B6BA"></span></span><span class="vx-bv">85%</span></div><div class="vx-b"><span class="vx-br">Candidata #5</span><span class="vx-bt"><span style="width:80.0%;background:#A9B6BA"></span></span><span class="vx-bv">80%</span></div></div><p class="peq suave" style="margin-top:16px">#2 e #4 são a mesma instrução, com 85%; vale a primeira.</p>
+    </div>
+  </div>
+  <aside class="nota">Cada candidata é testada, sem exemplos, em vinte perguntas da validação. A melhor teve 85% de acerto.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 6 APE PASSO 3 -->
+<section class="slide" data-secao="2" data-min="0.17" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 6 de 9 · Instrução · passo 3 de 3</p><h2>APE <span style="font-weight:500;color:var(--suave);font-size:34px">· Zhou et al. (2023)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-ambar ambar" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">O modelo escreve a instrução; a melhor é escolhida pelo desempenho.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="off">Gera 5 instruções candidatas: o modelo lê pares pergunta → categoria e diz qual instrução os explicaria.</li><li class="off">Testa cada candidata em 20 perguntas da validação, sem exemplos.</li><li class="on">Usa a de maior acurácia no teste, no lugar da 1ª frase do prompt.</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos no teste</i> 0</span><span class="chip"><i>Chamadas extras</i> 105 por fold</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">USAR NO TESTE · PROMPT REAL · QWEN3.8 27B · FOLD 1</p>
+      <pre class="prompt" style="font-size:21px;line-height:1.5"><span class="c">Leia cada dúvida de produtor rural e escreva a categoria</span>
+<span class="c">técnica correspondente.</span>
+<span class="i">Categorias válidas: … (11 nomes)</span>
+<span class="i">Responda APENAS com o nome de uma das categorias.</span>
+
+<span class="q">Dúvida: O que é cio?</span>
+<span class="q">Categoria:</span></pre><p class="peq"><b>Resposta do modelo:</b> <span class="pill ok">Reprodução ✓</span></p><p class="peq suave">A instrução vencedora é uma paráfrase da original, e o prompt não tem exemplos.</p>
+    </div>
+  </div>
+  <aside class="nota">A vencedora substitui a primeira frase do prompt no teste, sem exemplos. Repare que ela é praticamente uma paráfrase da instrução original.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 7 GLOBALE PASSO 1 -->
+<section class="slide" data-secao="2" data-min="0.17" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 7 de 9 · Demonstração · ordem · passo 1 de 3</p><h2>GlobalE <span style="font-weight:500;color:var(--suave);font-size:34px">· Lu et al. (2022)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-acento" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">Escolher a ordem dos exemplos que espalha melhor as previsões entre as categorias.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="on">Gera 6 ordens dos 11 exemplos do Few-shot.</li><li class="off">Em cada ordem, o modelo dá a probabilidade das 11 categorias para 20 perguntas da validação, sem gabarito.</li><li class="off">Conta a categoria mais provável de cada pergunta e usa a ordem com previsões mais espalhadas (maior entropia).</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos</i> os 11 do Few-shot</span><span class="chip"><i>Chamadas extras</i> 120 por fold</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">6 ORDENS · DADOS REAIS · QWEN3.8 27B · FOLD 1</p>
+      <div class="vx-lista" style="gap:10px"><div class="vx-ordem"><span class="vx-on">#1 original</span><div class="vx-chips"><span class="vx-chip">Alim.</span><span class="vx-chip">Forr.</span><span class="vx-chip">Geren.</span><span class="vx-chip">Orgân.</span><span class="vx-chip">Repr.</span><span class="vx-chip">Bem-est.</span><span class="vx-chip">Genét.</span><span class="vx-chip">Saúde</span><span class="vx-chip">Mast.</span><span class="vx-chip">Inst.</span><span class="vx-chip">Cria</span></div></div><div class="vx-ordem"><span class="vx-on">#2</span><div class="vx-chips"><span class="vx-chip">Geren.</span><span class="vx-chip">Cria</span><span class="vx-chip">Alim.</span><span class="vx-chip">Forr.</span><span class="vx-chip">Repr.</span><span class="vx-chip">Inst.</span><span class="vx-chip">Saúde</span><span class="vx-chip">Orgân.</span><span class="vx-chip">Bem-est.</span><span class="vx-chip">Genét.</span><span class="vx-chip">Mast.</span></div></div><div class="vx-ordem"><span class="vx-on">#3</span><div class="vx-chips"><span class="vx-chip">Mast.</span><span class="vx-chip">Cria</span><span class="vx-chip">Saúde</span><span class="vx-chip">Repr.</span><span class="vx-chip">Bem-est.</span><span class="vx-chip">Geren.</span><span class="vx-chip">Orgân.</span><span class="vx-chip">Forr.</span><span class="vx-chip">Inst.</span><span class="vx-chip">Alim.</span><span class="vx-chip">Genét.</span></div></div><div class="vx-ordem"><span class="vx-on">#4</span><div class="vx-chips"><span class="vx-chip">Cria</span><span class="vx-chip">Forr.</span><span class="vx-chip">Geren.</span><span class="vx-chip">Mast.</span><span class="vx-chip">Orgân.</span><span class="vx-chip">Inst.</span><span class="vx-chip">Alim.</span><span class="vx-chip">Saúde</span><span class="vx-chip">Genét.</span><span class="vx-chip">Bem-est.</span><span class="vx-chip">Repr.</span></div></div><div class="vx-ordem"><span class="vx-on">#5</span><div class="vx-chips"><span class="vx-chip">Inst.</span><span class="vx-chip">Mast.</span><span class="vx-chip">Geren.</span><span class="vx-chip">Genét.</span><span class="vx-chip">Forr.</span><span class="vx-chip">Orgân.</span><span class="vx-chip">Alim.</span><span class="vx-chip">Cria</span><span class="vx-chip">Repr.</span><span class="vx-chip">Saúde</span><span class="vx-chip">Bem-est.</span></div></div><div class="vx-ordem"><span class="vx-on">#6</span><div class="vx-chips"><span class="vx-chip">Cria</span><span class="vx-chip">Saúde</span><span class="vx-chip">Inst.</span><span class="vx-chip">Forr.</span><span class="vx-chip">Bem-est.</span><span class="vx-chip">Mast.</span><span class="vx-chip">Alim.</span><span class="vx-chip">Repr.</span><span class="vx-chip">Geren.</span><span class="vx-chip">Genét.</span><span class="vx-chip">Orgân.</span></div></div></div><p class="peq suave" style="margin-top:12px">Os mesmos 11 exemplos (um por categoria), em 6 ordens diferentes.</p>
+    </div>
+  </div>
+  <aside class="nota">GlobalE e LocalE escolhem a ordem dos exemplos. Primeiro, gero seis ordens dos onze exemplos do Few-shot: a original e cinco sorteadas.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 7 GLOBALE PASSO 2 -->
+<section class="slide" data-secao="2" data-min="0.19" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 7 de 9 · Demonstração · ordem · passo 2 de 3</p><h2>GlobalE <span style="font-weight:500;color:var(--suave);font-size:34px">· Lu et al. (2022)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-acento" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">Escolher a ordem dos exemplos que espalha melhor as previsões entre as categorias.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="off">Gera 6 ordens dos 11 exemplos do Few-shot.</li><li class="on">Em cada ordem, o modelo dá a probabilidade das 11 categorias para 20 perguntas da validação, sem gabarito.</li><li class="off">Conta a categoria mais provável de cada pergunta e usa a ordem com previsões mais espalhadas (maior entropia).</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos</i> os 11 do Few-shot</span><span class="chip"><i>Chamadas extras</i> 120 por fold</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">SONDAGEM · DADOS REAIS · QWEN3.8 27B · FOLD 1</p>
+      <div class="vx-caixa vx-coral" style=""><p class="vx-tit">Pergunta da validação</p><p class="vx-q" style="font-size:24px">Como maximizar o consumo de alimentos pelas vacas em lactação?</p></div><p class="peq" style="font-weight:700;margin:16px 0 10px">Probabilidades informadas pelo Qwen (ordem #1)</p><div class="vx-barras"><div class="vx-b"><span class="vx-br on">Alimentação</span><span class="vx-bt"><span style="width:95.0%;background:var(--acento)"></span></span><span class="vx-bv on">95%</span></div><div class="vx-b"><span class="vx-br">Gerenciamento</span><span class="vx-bt"><span style="width:3.0%;background:#A9B6BA"></span></span><span class="vx-bv">3%</span></div><div class="vx-b"><span class="vx-br">Forrageiros</span><span class="vx-bt"><span style="width:2.0%;background:#A9B6BA"></span></span><span class="vx-bv">2%</span></div></div><p class="peq suave" style="margin-top:12px">20 perguntas × 6 ordens = 120 respostas. O gabarito não é usado.</p>
+    </div>
+  </div>
+  <aside class="nota">Para cada ordem, peço ao modelo a probabilidade de cada categoria em vinte perguntas da validação, sem olhar o gabarito. Aqui, uma resposta real.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 7 GLOBALE PASSO 3 -->
+<section class="slide" data-secao="2" data-min="0.33" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 7 de 9 · Demonstração · ordem · passo 3 de 3</p><h2>GlobalE <span style="font-weight:500;color:var(--suave);font-size:34px">· Lu et al. (2022)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-acento" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">Escolher a ordem dos exemplos que espalha melhor as previsões entre as categorias.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="off">Gera 6 ordens dos 11 exemplos do Few-shot.</li><li class="off">Em cada ordem, o modelo dá a probabilidade das 11 categorias para 20 perguntas da validação, sem gabarito.</li><li class="on">Conta a categoria mais provável de cada pergunta e usa a ordem com previsões mais espalhadas (maior entropia).</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos</i> os 11 do Few-shot</span><span class="chip"><i>Chamadas extras</i> 120 por fold</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">ESCOLHER · DADOS REAIS · QWEN3.8 27B · FOLD 1</p>
+      <div class="vx-linha" style="gap:30px"><div class="vx-hist"><p class="vx-tit">Ordem #1</p><div class="vx-hbars"><div class="vx-hc"><span class="vx-hb" style="height:150.0px;background:var(--acento)"></span><span class="vx-hn">7</span><span class="vx-hl">Alim.</span></div><div class="vx-hc"><span class="vx-hb" style="height:64.28571428571428px;background:var(--acento)"></span><span class="vx-hn">3</span><span class="vx-hl">Forr.</span></div><div class="vx-hc"><span class="vx-hb" style="height:64.28571428571428px;background:var(--acento)"></span><span class="vx-hn">3</span><span class="vx-hl">Saúde</span></div><div class="vx-hc"><span class="vx-hb" style="height:42.857142857142854px;background:var(--acento)"></span><span class="vx-hn">2</span><span class="vx-hl">Inst.</span></div><div class="vx-hc"><span class="vx-hb" style="height:42.857142857142854px;background:var(--acento)"></span><span class="vx-hn">2</span><span class="vx-hl">Cria</span></div><div class="vx-hc"><span class="vx-hb" style="height:21.428571428571427px;background:var(--acento)"></span><span class="vx-hn">1</span><span class="vx-hl">Repr.</span></div><div class="vx-hc"><span class="vx-hb" style="height:21.428571428571427px;background:var(--acento)"></span><span class="vx-hn">1</span><span class="vx-hl">Mast.</span></div><div class="vx-hc"><span class="vx-hb" style="height:21.428571428571427px;background:var(--acento)"></span><span class="vx-hn">1</span><span class="vx-hl">Genét.</span></div></div><p class="peq" style="margin-top:8px"><b>8 categorias</b> · entropia <b>1,846</b></p></div><div class="vx-hist"><p class="vx-tit">Ordem #3</p><div class="vx-hbars"><div class="vx-hc"><span class="vx-hb" style="height:150.0px;background:#A9B6BA"></span><span class="vx-hn">7</span><span class="vx-hl">Alim.</span></div><div class="vx-hc"><span class="vx-hb" style="height:85.71428571428571px;background:#A9B6BA"></span><span class="vx-hn">4</span><span class="vx-hl">Saúde</span></div><div class="vx-hc"><span class="vx-hb" style="height:64.28571428571428px;background:#A9B6BA"></span><span class="vx-hn">3</span><span class="vx-hl">Forr.</span></div><div class="vx-hc"><span class="vx-hb" style="height:42.857142857142854px;background:#A9B6BA"></span><span class="vx-hn">2</span><span class="vx-hl">Inst.</span></div><div class="vx-hc"><span class="vx-hb" style="height:42.857142857142854px;background:#A9B6BA"></span><span class="vx-hn">2</span><span class="vx-hl">Cria</span></div><div class="vx-hc"><span class="vx-hb" style="height:21.428571428571427px;background:#A9B6BA"></span><span class="vx-hn">1</span><span class="vx-hl">Mast.</span></div><div class="vx-hc"><span class="vx-hb" style="height:21.428571428571427px;background:#A9B6BA"></span><span class="vx-hn">1</span><span class="vx-hl">Genét.</span></div></div><p class="peq" style="margin-top:8px"><b>7 categorias</b> · entropia <b>1,734</b></p></div></div><p class="peq suave" style="margin-top:14px">Categoria mais provável de cada uma das 20 perguntas. Na ordem #1, as previsões se espalham por mais categorias (maior entropia) e ela foi escolhida.</p>
+    </div>
+  </div>
+  <aside class="nota">Então conto a categoria mais provável de cada pergunta. Quanto mais espalhadas as previsões, maior a entropia e menor o viés. Na ordem 1, elas se distribuem por oito categorias; na ordem 3, por sete. A ordem 1 foi a escolhida.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 8 LOCALE PASSO 1 -->
+<section class="slide" data-secao="2" data-min="0.27" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 8 de 9 · Demonstração · ordem · passo 1 de 2</p><h2>LocalE <span style="font-weight:500;color:var(--suave);font-size:34px">· Lu et al. (2022)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-acento" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">Escolher a ordem em que o modelo fica menos “certo demais” em cada pergunta.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="on">Usa as mesmas 6 ordens e as mesmas respostas do GlobalE: nenhuma chamada a mais.</li><li class="off">Mede a incerteza (entropia) de cada pergunta, faz a média e usa a ordem de maior média.</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos</i> os 11 do Few-shot</span><span class="chip"><i>Chamadas extras</i> 0</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">MESMA PERGUNTA, DUAS ORDENS · DADOS REAIS · QWEN3.8 27B · FOLD 1</p>
+      <div class="vx-caixa vx-coral" style=""><p class="vx-tit">Pergunta da validação</p><p class="vx-q" style="font-size:22px">Qual a melhor estratégia de cruzamento entre animais de origem europeia (E) e zebuínos (Z), nas condições de meio ambiente e manejo existentes no Brasil?</p></div><div class="vx-linha" style="gap:28px;margin-top:14px"><div class="vx-caixa vx-claro" style="flex:1;min-width:0;"><p class="vx-tit">Ordem #3: 100% numa só</p><div class="vx-barras"><div class="vx-b"><span class="vx-br on">Melhoramento</span><span class="vx-bt"><span style="width:100.0%;background:var(--acento)"></span></span><span class="vx-bv on">100%</span></div></div></div><div class="vx-caixa vx-claro" style="flex:1;min-width:0;"><p class="vx-tit">Ordem #6: mais cautelosa</p><div class="vx-barras"><div class="vx-b"><span class="vx-br on">Melhoramento</span><span class="vx-bt"><span style="width:70.0%;background:var(--acento)"></span></span><span class="vx-bv on">70%</span></div><div class="vx-b"><span class="vx-br">Reprodução</span><span class="vx-bt"><span style="width:10.0%;background:#A9B6BA"></span></span><span class="vx-bv">10%</span></div><div class="vx-b"><span class="vx-br">Cria e Recria</span><span class="vx-bt"><span style="width:5.0%;background:#A9B6BA"></span></span><span class="vx-bv">5%</span></div><div class="vx-b"><span class="vx-br">Alimentação</span><span class="vx-bt"><span style="width:5.0%;background:#A9B6BA"></span></span><span class="vx-bv">5%</span></div><div class="vx-b"><span class="vx-br">Forrageiros</span><span class="vx-bt"><span style="width:2.0%;background:#A9B6BA"></span></span><span class="vx-bv">2%</span></div></div></div></div>
+    </div>
+  </div>
+  <aside class="nota">O LocalE usa as mesmas respostas, então não custa nada a mais. Ele olha cada pergunta: nesta, com a ordem 3, o modelo cravou 100% numa categoria; com a ordem 6, ficou mais cauteloso.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 8 LOCALE PASSO 2 -->
+<section class="slide" data-secao="2" data-min="0.21" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 8 de 9 · Demonstração · ordem · passo 2 de 2</p><h2>LocalE <span style="font-weight:500;color:var(--suave);font-size:34px">· Lu et al. (2022)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-acento" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">Escolher a ordem em que o modelo fica menos “certo demais” em cada pergunta.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="off">Usa as mesmas 6 ordens e as mesmas respostas do GlobalE: nenhuma chamada a mais.</li><li class="on">Mede a incerteza (entropia) de cada pergunta, faz a média e usa a ordem de maior média.</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos</i> os 11 do Few-shot</span><span class="chip"><i>Chamadas extras</i> 0</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">ESCOLHER · DADOS REAIS · QWEN3.8 27B · FOLD 1</p>
+      <table class="t" style="font-size:22px"><tr><th>Ordem</th><th class="n">LocalE (média das 20)</th></tr><tr><td>#1</td><td class="n ">0,354</td></tr><tr><td>#2</td><td class="n ">0,349</td></tr><tr><td>#3</td><td class="n ">0,244</td></tr><tr><td>#4</td><td class="n ">0,348</td></tr><tr><td>#5</td><td class="n ">0,341</td></tr><tr><td>#6</td><td class="n melhor">0,376</td></tr></table><div class="leitura" style="margin-top:16px;padding:14px 20px"><span class="ic">Diferença</span><p style="font-size:22px">GlobalE olha o conjunto e escolheu a ordem #1; LocalE olha cada pergunta e escolheu a #6.</p></div>
+    </div>
+  </div>
+  <aside class="nota">Faço a média dessa incerteza nas vinte perguntas e escolho a maior. No Qwen, o GlobalE escolheu a ordem 1, e o LocalE, a ordem 6.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 9 CALIBRAÇÃO PASSO 1 -->
+<section class="slide" data-secao="2" data-min="0.22" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 9 de 9 · Função de pontuação · passo 1 de 3</p><h2>Calibração <span style="font-weight:500;color:var(--suave);font-size:34px">· Zhao et al. (2021)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-coral coral" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">Medir a preferência do modelo quando não há pergunta e descontá-la.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="on">Pede a probabilidade de cada categoria (mesmos exemplos do Few-shot).</li><li class="off">Mede o viés: repete com a dúvida trocada por “N/A”, “” e “[MASK]”.</li><li class="off">Divide cada probabilidade pelo viés e escolhe a maior.</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos</i> os 11 do Few-shot</span><span class="chip"><i>Chamadas</i> 1 por pergunta + 3 por fold</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">PROBABILIDADES · DADOS REAIS · QWEN3.8 27B · FOLD 1</p>
+      <div class="vx-caixa vx-coral" style=""><p class="vx-tit">Pergunta</p><p class="vx-q">O que é cio?</p></div><p class="peq" style="font-weight:700;margin:16px 0 10px">Probabilidades escritas pelo Qwen</p><div class="vx-barras"><div class="vx-b"><span class="vx-br on">Reprodução</span><span class="vx-bt"><span style="width:70.0%;background:var(--acento)"></span></span><span class="vx-bv on">70%</span></div><div class="vx-b"><span class="vx-br">Alimentação</span><span class="vx-bt"><span style="width:10.0%;background:#A9B6BA"></span></span><span class="vx-bv">10%</span></div><div class="vx-b"><span class="vx-br">Cria e Recria</span><span class="vx-bt"><span style="width:5.0%;background:#A9B6BA"></span></span><span class="vx-bv">5%</span></div><div class="vx-b"><span class="vx-br">Saúde Animal</span><span class="vx-bt"><span style="width:5.0%;background:#A9B6BA"></span></span><span class="vx-bv">5%</span></div><div class="vx-b"><span class="vx-br">Melhoramento</span><span class="vx-bt"><span style="width:3.0%;background:#A9B6BA"></span></span><span class="vx-bv">3%</span></div><div class="vx-b"><span class="vx-br">Forrageiros</span><span class="vx-bt"><span style="width:2.0%;background:#A9B6BA"></span></span><span class="vx-bv">2%</span></div><div class="vx-b"><span class="vx-br">Gerenciamento</span><span class="vx-bt"><span style="width:1.5%;background:#A9B6BA"></span></span><span class="vx-bv">1%</span></div></div>
+    </div>
+  </div>
+  <aside class="nota">A calibração começa pedindo ao modelo a probabilidade de cada categoria, com os mesmos exemplos do Few-shot. Para “O que é cio?”, o Qwen deu 70% para Reprodução.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 9 CALIBRAÇÃO PASSO 2 -->
+<section class="slide" data-secao="2" data-min="0.25" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 9 de 9 · Função de pontuação · passo 2 de 3</p><h2>Calibração <span style="font-weight:500;color:var(--suave);font-size:34px">· Zhao et al. (2021)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-coral coral" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">Medir a preferência do modelo quando não há pergunta e descontá-la.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="off">Pede a probabilidade de cada categoria (mesmos exemplos do Few-shot).</li><li class="on">Mede o viés: repete com a dúvida trocada por “N/A”, “” e “[MASK]”.</li><li class="off">Divide cada probabilidade pelo viés e escolhe a maior.</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos</i> os 11 do Few-shot</span><span class="chip"><i>Chamadas</i> 1 por pergunta + 3 por fold</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">MEDIR O VIÉS · DADOS REAIS · QWEN3.8 27B · FOLD 1</p>
+      <p class="peq" style="font-weight:700;margin-bottom:10px">Mesmo prompt, sem pergunta: o que o Qwen respondeu</p><div class="vx-linha" style="gap:16px"><div class="vx-caixa vx-claro" style="flex:1;min-width:0;"><p class="vx-tit">“N/A”</p><p>9% para cada categoria</p></div><div class="vx-caixa vx-coral" style="flex:1;min-width:0;"><p class="vx-tit">“” (vazio)</p><p><b>100% Gerenciamento</b></p></div><div class="vx-caixa vx-coral" style="flex:1;min-width:0;"><p class="vx-tit">“[MASK]”</p><p><b>100% Gerenciamento</b></p></div></div><div class="vx-seta vx-baixo">↓</div><p class="peq" style="font-weight:700;margin:6px 0 10px">Média = viés do modelo (p<sub>cf</sub>)</p><div class="vx-barras"><div class="vx-b"><span class="vx-br on">Gerenciamento</span><span class="vx-bt"><span style="width:64.0%;background:var(--acento)"></span></span><span class="vx-bv on">64%</span></div><div class="vx-b"><span class="vx-br">cada uma das outras 10</span><span class="vx-bt"><span style="width:4.0%;background:#A9B6BA"></span></span><span class="vx-bv">4%</span></div></div>
+    </div>
+  </div>
+  <aside class="nota">Depois meço o viés: repito o prompt sem pergunta, com N/A, vazio e MASK. Sem pergunta, o Qwen deu 100% para Gerenciamento, a última categoria da lista. Esse é o viés dele.</aside>
+</section>
+
+<!-- ===================================================== TÉCNICA 9 CALIBRAÇÃO PASSO 3 -->
+<section class="slide" data-secao="2" data-min="0.14" style="gap:22px">
+  <div class="cab"><p class="eyebrow">02 · Técnica 9 de 9 · Função de pontuação · passo 3 de 3</p><h2>Calibração <span style="font-weight:500;color:var(--suave);font-size:34px">· Zhao et al. (2021)</span></h2></div>
+  <div style="display:grid;grid-template-columns:680px 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card borda-coral coral" style="padding:22px 26px"><span class="tag">Ideia</span><p style="font-size:25px;font-weight:600">Medir a preferência do modelo quando não há pergunta e descontá-la.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:23px">Como implementei</h3><ol class="suave passos"><li class="off">Pede a probabilidade de cada categoria (mesmos exemplos do Few-shot).</li><li class="off">Mede o viés: repete com a dúvida trocada por “N/A”, “” e “[MASK]”.</li><li class="on">Divide cada probabilidade pelo viés e escolhe a maior.</li></ol></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="chip"><i>Exemplos</i> os 11 do Few-shot</span><span class="chip"><i>Chamadas</i> 1 por pergunta + 3 por fold</span></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <p class="peq suave" style="font-weight:700;letter-spacing:.06em">CORRIGIR · DADOS REAIS · QWEN3.8 27B · FOLD 1</p>
+      <table class="t" style="font-size:22px"><tr><th>Categoria</th><th class="n">p (modelo)</th><th class="n">viés p<sub>cf</sub></th><th class="n">corrigida</th></tr><tr><td><b>Reprodução</b></td><td class="n">0,640</td><td class="n">0,036</td><td class="n melhor">0,651</td></tr><tr><td>Alimentação e Manejo</td><td class="n">0,099</td><td class="n">0,036</td><td class="n">0,101</td></tr><tr><td>Gerenciamento</td><td class="n">0,018</td><td class="n" style="color:#A63A22;font-weight:700">0,637</td><td class="n">0,001</td></tr></table><p class="peq suave" style="margin-top:14px">Corrigida = p ÷ p<sub>cf</sub>, normalizada. Gerenciamento é derrubada; Reprodução continua a maior.</p><p class="peq"><b>Resposta do modelo:</b> <span class="pill ok">Reprodução ✓</span></p>
+    </div>
+  </div>
+  <aside class="nota">Por fim, divido cada probabilidade pelo viés. Gerenciamento cai para quase zero, e Reprodução continua sendo a resposta.</aside>
+</section>
+
+<!-- ===================================================== 7 BASE -->
+<section class="slide" data-secao="3" data-min="0.5">
+  <div class="cab"><p class="eyebrow">03 · Base de dados</p><h2>500 perguntas, 11 categorias: os capítulos do manual</h2></div>
+  <div style="display:grid;grid-template-columns:1fr 470px;gap:40px">
+    <div id="graficoBase"></div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="card"><p class="peq suave" style="font-weight:700">GABARITO</p><p style="font-size:30px;font-weight:700">O capítulo do livro</p><p class="suave peq">Rótulo objetivo, definido pelos autores do manual.</p></div>
+      <div class="card"><p class="peq suave" style="font-weight:700">DESBALANCEAMENTO</p><p style="font-size:30px;font-weight:700">8 a 155 por categoria</p><p class="suave peq">Por isso o F1-macro é a métrica principal.</p></div>
+      <div class="card"><p class="peq suave" style="font-weight:700">TIPOLOGIA</p><p style="font-size:30px;font-weight:700">138 booleanas · 362 descritivas</p><p class="suave peq">“É possível…?” × “Como…?”</p></div>
+    </div>
+  </div>
+  <aside class="nota">A base são as 500 perguntas do manual, convertidas do PDF para JSON. O gabarito é o capítulo do livro, um rótulo objetivo definido pelos autores. A base é desbalanceada, de 8 a 155 perguntas por categoria; por isso a métrica principal é o F1-macro, que dá o mesmo peso a todas. As perguntas também foram separadas em 138 booleanas e 362 descritivas.</aside>
+</section>
+
+<!-- ===================================================== 8 PROTOCOLO -->
+<section class="slide" data-secao="3" data-min="0.81">
+  <div class="cab"><p class="eyebrow">03 · Protocolo experimental</p><h2>Validação cruzada em 5 folds: cada pergunta é testada uma vez</h2></div>
+  <div style="display:flex;border-radius:16px;overflow:hidden;height:150px">
+    <div style="flex:3;background:var(--acento);color:#fff;padding:26px 30px"><p style="font-weight:800;font-size:34px">Treino · 300</p><p class="peq" style="color:#D6EEF1">de onde saem os exemplos do prompt</p></div>
+    <div style="flex:1;background:#7FBFCB;color:var(--tinta);padding:26px 30px"><p style="font-weight:800;font-size:34px">Validação · 100</p><p class="peq">ajuste: instrução do APE e ordem do GlobalE e do LocalE</p></div>
+    <div style="flex:1;background:var(--coral);color:#fff;padding:26px 30px"><p style="font-weight:800;font-size:34px">Teste · 100</p><p class="peq" style="color:#FDE3DC">só para medir</p></div>
+  </div>
+  <div class="g3">
+    <div class="card"><span class="num" style="font-size:52px">5×</span><h3>Estratificado</h3><p class="suave peq">As 11 categorias em todos os folds; ao final, as 500 perguntas foram testadas. Semente 42.</p></div>
+    <div class="card"><span class="num" style="font-size:52px">F1</span><h3>Métricas</h3><p class="suave peq">Acurácia, precisão, recall e F1-macro: média ± intervalo de confiança de 95%.</p></div>
+    <div class="card"><span class="num" style="font-size:52px">p</span><h3>Teste t pareado</h3><p class="suave peq">Melhor técnica × cada uma das outras. p &gt; 0,05: <b>sem diferença estatisticamente significativa</b>.</p></div>
+  </div>
+  <div class="leitura" style="padding:16px 26px"><span class="ic">Fixados</span><p style="font-size:24px">KATE e Ordenação com <b>k = 5</b> exemplos; Few-shot com <b>1 exemplo por categoria</b> (11), para manter o prompt curto e com todas as categorias.</p></div>
+  <aside class="nota">Usei validação cruzada estratificada em cinco folds. Em cada fold, 300 perguntas de treino fornecem os exemplos; 100 de validação servem para ajustar parâmetros, como a instrução do APE e a ordem do GlobalE e do LocalE; e 100 de teste servem só para medir. No fim, as 500 perguntas foram testadas uma vez. O número de exemplos, cinco no KATE e um por categoria no Few-shot, foi fixado para manter o prompt curto e com todas as categorias. As métricas são acurácia, precisão, recall e F1-macro, e o teste t pareado compara a melhor técnica de cada modelo com as demais.</aside>
+</section>
+
+<!-- ===================================================== 9 MODELOS -->
+<section class="slide" data-secao="3" data-min="0.44">
+  <div class="cab"><p class="eyebrow">03 · Modelos avaliados</p><h2>Quatro LLMs, do computador pessoal ao modelo comercial</h2></div>
+  <div class="g4">
+    <div class="card borda-acento"><span class="tag">Local · aberto</span><span class="num">3B</span><h3>Llama 3.2</h3><p class="suave peq">Meta. Roda no próprio computador via Ollama, sem internet.</p></div>
+    <div class="card borda-acento"><span class="tag">API · aberto</span><span class="num">27B</span><h3>Qwen3.8</h3><p class="suave peq">Alibaba. Via OpenRouter, sem o modo de raciocínio.</p></div>
+    <div class="card borda-acento"><span class="tag">API · aberto</span><span class="num">70B</span><h3>Llama 3.3</h3><p class="suave peq">Meta. Maior modelo aberto do estudo, via OpenRouter.</p></div>
+    <div class="card borda-ambar ambar"><span class="tag">API · comercial</span><span class="num" style="color:var(--ambar)">?</span><h3>Gemini 3.1 Flash-Lite</h3><p class="suave peq">Google. Fechado e de baixo custo; tamanho não divulgado.</p></div>
+  </div>
+  <div class="leitura"><span class="ic">Igual para todos</span><p><b>Temperatura 0</b> (mesma entrada, mesma saída) e cada resposta salva em disco: o experimento pode ser auditado e repetido.</p></div>
+  <aside class="nota">Usei quatro modelos: o Llama 3.2, de 3 bilhões de parâmetros, que roda no próprio computador, sem internet; o Qwen3.8, de 27 bilhões, e o Llama 3.3, de 70 bilhões, de pesos abertos; e o Gemini 3.1 Flash-Lite, comercial, cujo tamanho não é divulgado. Todos com temperatura zero, e cada resposta foi salva em disco.</aside>
+</section>
+
+<!-- ===================================================== 14 RESULTADOS EM 3 NÚMEROS -->
+<section class="slide escuro" data-secao="4" data-min="0.44" style="justify-content:center;gap:48px">
+  <div class="cab"><p class="eyebrow">04 · Resultados em três números</p><h2 style="color:#fff">O que cerca de 24 mil chamadas aos modelos mostraram</h2></div>
+  <div class="g3" style="gap:32px">
+    <div class="card"><span class="num" id="heroMelhor" style="color:#7FD3DE;font-size:96px">83,2%</span><h3>de F1-macro</h3><p class="suave">Melhor resultado: <b style="color:#fff" id="heroMelhorTxt">Qwen3.8 27B com KATE</b>.</p></div>
+    <div class="card"><span class="num" style="color:#7FD3DE;font-size:96px">4 de 4</span><h3>modelos</h3><p class="suave">em que KATE e Ordenação estão entre as melhores técnicas.</p></div>
+    <div class="card"><span class="num" id="heroAmpl" style="color:#FFB199;font-size:96px">25,9 pp</span><h3>de diferença</h3><p class="suave">entre a melhor e a pior técnica no modelo de 3B. Nos maiores: 6 a 8 pp.</p></div>
+  </div>
+  <aside class="nota">Os resultados em três números. O melhor F1-macro foi 83,2%, com o Qwen e o KATE. KATE e Ordenação ficaram entre as melhores técnicas nos quatro modelos. E a técnica pesa muito mais no modelo pequeno: quase 26 pontos de diferença entre a melhor e a pior no 3B, contra 6 a 8 nos maiores.</aside>
+</section>
+
+<!-- ===================================================== 15 TABELA (dinâmico) -->
+<section class="slide" data-secao="4" data-min="0.65" style="gap:22px">
+  <div class="cab"><p class="eyebrow">04 · Desempenho geral</p><h2>Desempenho das 9 técnicas nos 4 modelos</h2></div>
+  <div class="abas" id="abasMetricaTab"></div>
+  <div id="tabResultados"></div>
+  <p class="suave peq" id="notaResultados"></p>
+  <aside class="nota">Esta é a tabela principal, com o F1-macro. A célula escura é a melhor técnica de cada modelo, e as claras não têm diferença estatisticamente significativa em relação a ela. Três leituras: o 3B fica num patamar muito abaixo; KATE e Ordenação estão destacadas em todas as colunas; e o Zero-shot nunca está, ou seja, dar exemplos sempre ajudou. Nas abas, acurácia, precisão e recall contam a mesma história, e os modelos grandes seguiram o formato de resposta em 100% dos casos.</aside>
+</section>
+
+<!-- ===================================================== 16 SIGNIFICÂNCIA (dinâmico) -->
+<section class="slide" data-secao="4" data-min="0.5" style="gap:20px">
+  <div class="cab"><p class="eyebrow">04 · Significância estatística</p><h2>Quais técnicas não diferem significativamente da melhor?</h2></div>
+  <div class="abas" id="abasModeloSig"></div>
+  <div class="abas" id="abasMetricaSig"></div>
+  <div id="graficoSig" style="position:relative"></div>
+  <div class="leitura" style="padding:16px 26px"><span class="ic">Leitura</span><p id="leituraSig" style="font-size:24px"></p></div>
+  <aside class="nota">Este é o teste t pareado de cada modelo. As barras azuis não diferem significativamente da melhor técnica; as cinzas são significativamente piores. No Llama 3B, só KATE, APE e GlobalE ficam junto da Ordenação. No Qwen e no Llama 70B, ficam abaixo o Zero-shot e o APE. No Gemini, apenas o Zero-shot. Quando não há diferença significativa, trato as técnicas como equivalentes.</aside>
+</section>
+
+<!-- ===================================================== 17 TAMANHO DO MODELO (dinâmico) -->
+<section class="slide" data-secao="4" data-min="0.66" style="gap:22px">
+  <div class="cab"><p class="eyebrow">04 · Comparação entre os modelos</p><h2>O modelo aberto de 27B não difere significativamente do comercial</h2></div>
+  <div id="graficoPorte" style="position:relative"></div>
+  <div class="leitura" style="padding:16px 26px"><span class="ic">Leitura</span><p style="font-size:24px">Cada ponto é uma técnica. O <b>Gemini</b> (comercial) não difere significativamente do <b>Qwen 27B</b> (aberto); o Llama 70B fica um pouco abaixo no F1; o <b>3B</b> é muito inferior, e nele a técnica pesa mais (26 pontos entre a melhor e a pior).</p></div>
+  <aside class="nota">Aqui comparo os modelos. Cada ponto é uma técnica: no 3B, os pontos se espalham por 26 pontos percentuais; nos maiores, se agrupam. À direita, o teste t da melhor técnica de cada modelo contra o Qwen com KATE. O Gemini, comercial, não difere significativamente do Qwen, que é aberto. O Llama 70B fica um pouco abaixo no F1, e o 3B é muito inferior. Entre os modelos grandes, a escolha do modelo pesou pouco; a grande diferença é para o modelo pequeno.</aside>
+</section>
+
+<!-- ===================================================== 18 MATRIZ (dinâmico) -->
+<section class="slide" data-secao="4" data-min="0.68" style="gap:12px;padding-top:104px">
+  <div class="cab"><p class="eyebrow">04 · Matriz de confusão · soma dos 5 folds de teste</p></div>
+  <div class="abas" id="abasModeloCM"></div>
+  <div class="abas" id="abasMetodoCM"></div>
+  <div class="abas" id="abasModoCM"></div>
+  <p id="infoCM" style="font-size:23px"></p>
+  <div style="display:grid;grid-template-columns:auto 1fr;gap:34px;align-items:start">
+    <div id="matriz" style="position:relative"></div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card" style="padding:20px 24px"><h3 style="font-size:24px">Maior confusão</h3><p class="suave peq"><b>Alimentação e Manejo → Reprodução</b>: cerca de 20 casos em cada modelo grande.</p></div>
+      <div class="card" style="padding:20px 24px"><h3 style="font-size:24px">Recall × precisão</h3><p class="suave peq"><b>Recall</b> (à direita): quantas perguntas da categoria o modelo achou. <b>Precisão</b> (embaixo): quantas respostas da categoria estavam certas.</p><p class="suave peq">Gerenciamento <b>recebe</b> perguntas de outros capítulos (recall 100%, precisão 69%); Alimentação e Manejo <b>perde</b> (61% e 76%).</p></div>
+    </div>
+  </div>
+  <aside class="nota">Esta é a matriz de confusão, somando os cinco folds: linhas são a categoria verdadeira, colunas a prevista, e a diagonal azul são os acertos. No Qwen com KATE, Saúde Animal, Mastite e Gerenciamento têm 100% de recall. A confusão mais frequente, nos três modelos grandes, é Alimentação e Manejo classificada como Reprodução. A linha de baixo é a precisão: Gerenciamento recebe perguntas de outros capítulos, com 100% de recall, mas 69% de precisão. Por isso, nos modelos grandes, o recall médio fica acima da precisão.</aside>
+</section>
+
+<!-- ===================================================== 19 EXEMPLOS DE ERROS -->
+<section class="slide" data-secao="4" data-min="0.75">
+  <div class="cab"><p class="eyebrow">04 · Análise de erros</p><h2>Muitos erros vêm da semelhança entre categorias</h2></div>
+  <div class="g3">
+    <div class="card borda-coral"><span class="tag" style="background:var(--coral-bg);color:#A63A22">Sobreposição de temas</span>
+      <p class="q">“Deficiências minerais atrasam o cio?”</p>
+      <div class="par"><span class="pill ok">Gabarito: Alimentação e Manejo</span><span class="pill err">3 modelos: Reprodução</span></div>
+      <p class="suave peq">Os 5 exemplos do KATE eram de Alimentação, mas a palavra “cio” prevaleceu. A resposta é defensável.</p></div>
+    <div class="card borda-coral"><span class="tag" style="background:var(--coral-bg);color:#A63A22">Palavra-chave enganosa</span>
+      <p class="q">“Qual o melhor tipo de silo?”</p>
+      <div class="par"><span class="pill ok">Gabarito: Recursos Forrageiros</span><span class="pill err">3 modelos: Instalações</span></div>
+      <p class="suave peq">O KATE trouxe “Qual o melhor tipo de piso para curral?”: mesma estrutura de frase, tema diferente.</p></div>
+    <div class="card borda-coral"><span class="tag" style="background:var(--coral-bg);color:#A63A22">Temas próximos</span>
+      <p class="q">“Uma vaca deve ser descartada depois de quantas lactações?”</p>
+      <div class="par"><span class="pill ok">Gabarito: Alimentação e Manejo</span><span class="pill err">3 modelos: Gerenciamento</span></div>
+      <p class="suave peq">Descarte é decisão de gestão: um especialista também aceitaria.</p></div>
+  </div>
+  <div class="leitura"><span class="ic">Em números</span><p><b>55 das 500</b> perguntas foram erradas pelos três modelos grandes com KATE, grande parte com dois temas possíveis.</p></div>
+  <aside class="nota">Três erros reais dos três modelos grandes. “Deficiências minerais atrasam o cio?” está em Alimentação e Manejo, mas a palavra cio levou os modelos a Reprodução, uma resposta defensável. “Qual o melhor tipo de silo?” é de Recursos Forrageiros, mas o KATE trouxe uma pergunta de mesma forma sobre piso de curral, e os modelos responderam Instalações. E o descarte de vacas, em Alimentação e Manejo, foi classificado como Gerenciamento. São categorias semelhantes, em que uma pergunta se relaciona a mais de um tema. No total, 55 perguntas foram erradas pelos três modelos grandes.</aside>
+</section>
+
+<!-- ===================================================== 20 VIÉS (dinâmico) -->
+<section class="slide" data-secao="4" data-min="0.69" style="gap:20px">
+  <div class="cab"><p class="eyebrow">04 · Viés das respostas</p><h2>O modelo pequeno concentra as respostas em poucas categorias</h2></div>
+  <div class="abas" id="abasModeloDist"></div>
+  <div class="abas" id="abasMetodoDist"></div>
+  <div style="display:grid;grid-template-columns:1160px 1fr;gap:34px">
+    <div id="graficoDist" style="position:relative"></div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:25px">Recência no fold 1</h3><p class="suave peq">O Few-shot do 3B respondeu “Cria e Recria” em <b>81%</b> das perguntas, a categoria do <b>último exemplo</b>.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:25px">Mas não só recência</h3><p class="suave peq">Nos outros folds, o último exemplo mudou e o 3B continuou em “Cria e Recria” e “Saúde Animal”: <b>434 de 500</b> respostas.</p></div>
+      <div class="card" style="padding:22px 26px"><h3 style="font-size:25px">Modelos grandes</h3><p class="suave peq">A categoria do último exemplo recebeu no máximo 15% das respostas por fold.</p></div>
+    </div>
+  </div>
+  <aside class="nota">Aqui, cinza é a distribuição real das categorias, e coral, a das respostas. No Few-shot do Llama 3B, as respostas se concentram em Cria e Recria e em Saúde Animal. No primeiro fold, 81% foram Cria e Recria, a categoria do último exemplo: o viés de recência. Mas nos outros folds o último exemplo mudou e o modelo continuou nessas duas categorias. Por isso o KATE ajudou tanto: exemplos parecidos dão um sinal mais forte que o viés. Nos modelos grandes, as barras acompanham a distribuição real.</aside>
+</section>
+
+<!-- ===================================================== 21 CALIBRAÇÃO -->
+<section class="slide" data-secao="4" data-min="0.71">
+  <div class="cab"><p class="eyebrow">04 · Efeito da calibração</p><h2>Nos modelos grandes, o viés estava só na última categoria da lista</h2></div>
+  <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:36px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:18px">
+    <table class="t" id="tabCalib">
+      <tr><th>F1-macro (%)</th><th class="n">Llama 3B</th><th class="n">Qwen 27B</th><th class="n">Llama 70B</th><th class="n">Gemini</th></tr>
+      <tr><td>Sem calibração</td><td class="n">9,8</td><td class="n">77,7</td><td class="n">74,3</td><td class="n">80,3</td></tr>
+      <tr><td>Com calibração</td><td class="n">10,7</td><td class="n">77,8</td><td class="n">76,3</td><td class="n">80,8</td></tr>
+      <tr><td><b>Previsões alteradas</b> (de 500)</td><td class="n"><b>351</b></td><td class="n"><b>11</b></td><td class="n"><b>3</b></td><td class="n"><b>1</b></td></tr>
+      <tr><td>Acertos entre as alteradas (antes → depois)</td><td class="n">—</td><td class="n">3 → 4</td><td class="n">0 → 2</td><td class="n">0 → 1</td></tr>
+    </table>
+    <div class="card"><h3>Resposta às entradas sem conteúdo</h3>
+      <ul class="suave peq" style="gap:6px"><li><b>Qwen:</b> 100% para Gerenciamento em 9 de 10 respostas a “” e “[MASK]”</li><li><b>Llama 70B:</b> 0% para tudo em 14 de 15 (ignoradas); 1 vez, 100% Gerenciamento</li><li><b>Gemini:</b> recusou “” e “[MASK]”; a “N/A”, deu distribuição quase uniforme (1 vez, 100% Gerenciamento)</li></ul></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div class="card"><h3>O que isso mostra</h3><p class="suave peq">Quando havia viés, ele era de <b>posição</b>: a última categoria da lista, <b>Gerenciamento</b>. A calibração corrigiu exatamente isso: as 15 previsões alteradas nos modelos grandes <b>deixaram de ser Gerenciamento</b>, com 4 acertos a mais.</p>
+        <p class="suave peq">Como o viés atingia só uma categoria pequena (11 perguntas), o efeito no F1 foi pequeno.</p></div>
+      <div class="card coral"><h3>E no 3B?</h3><p class="suave peq">Mudou 351 respostas, mas as probabilidades que ele escreve são pouco informativas: 9,8% de F1 antes de corrigir.</p></div>
+    </div>
+  </div>
+  <aside class="nota">Nos modelos grandes, a calibração mudou poucas previsões: 11, 3 e 1 entre 500. O motivo: sem pergunta, o Qwen deu 100% para Gerenciamento, a última categoria da lista; o Llama 70B respondeu 0% para tudo quase sempre; e o Gemini se recusou ou distribuiu igualmente. O único viés era de posição, pela última opção, e a calibração corrigiu exatamente isso: as 15 previsões alteradas deixaram de ser Gerenciamento, com quatro acertos a mais. No 3B, ela mudou 351 respostas, mas as probabilidades que ele escreve são pouco informativas.</aside>
+</section>
+
+<!-- ===================================================== 22 LIMITAÇÕES -->
+<section class="slide" data-secao="5" data-min="0.57">
+  <div class="cab"><p class="eyebrow">05 · Limitações e trabalhos futuros</p><h2>O que limita os resultados e o que vem depois</h2></div>
+  <div class="g2">
+    <div class="card borda-coral coral"><h3>Limitações</h3>
+      <ul class="suave peq" style="gap:12px"><li>Probabilidades <b>verbalizadas</b>, não internas (GlobalE, LocalE, Calibração)</li><li>Cotas das APIs limitaram as buscas: APE com 5 candidatas, GlobalE com 6 ordens</li><li>Categorias pequenas (8 a 18 perguntas) deixam o F1-macro instável</li><li>Categorias <b>semelhantes</b>: uma pergunta pode se relacionar a mais de um tema</li><li>Número de exemplos fixado (k = 5; 1 por categoria)</li></ul>
+    </div>
+    <div class="card borda-acento"><h3>Trabalhos futuros</h3>
+      <ul class="suave peq" style="gap:12px"><li>Repetir com probabilidades internas em modelos locais</li><li>Ajustar o número de exemplos na validação</li><li>Integrar o classificador a um <b>sistema RAG</b> com as respostas da Embrapa</li><li>Testar com <b>dúvidas reais</b> de produtores</li></ul>
+    </div>
+  </div>
+  <aside class="nota">Como limitações: as probabilidades foram escritas pelo modelo, e não as internas; os limites das APIs restringiram o tamanho das buscas; as categorias pequenas deixam o F1-macro instável; algumas categorias são semelhantes entre si; e o número de exemplos foi fixado. Como trabalhos futuros: repetir com probabilidades internas em modelos locais, ajustar o número de exemplos na validação, integrar o classificador a um sistema RAG e testar com dúvidas reais de produtores.</aside>
+</section>
+
+<!-- ===================================================== 23 CONCLUSÕES -->
+<section class="slide" data-secao="5" data-min="0.84">
+  <div class="cab"><p class="eyebrow">05 · Conclusões</p><h2>O que os experimentos mostram</h2></div>
+  <div class="g2" style="gap:24px">
+    <div class="card borda-acento"><span class="num" style="font-size:48px">1</span><h3>Exemplos parecidos funcionam melhor</h3><p class="suave peq">KATE e Ordenação ficaram entre as melhores técnicas nos 4 modelos. Melhor resultado: Qwen3.8 27B + KATE, 83,2% de F1-macro.</p></div>
+    <div class="card borda-acento"><span class="num" style="font-size:48px">2</span><h3>A técnica pesa mais no modelo pequeno</h3><p class="suave peq">26 pp de diferença no 3B; nos maiores, as técnicas com exemplos não diferem significativamente. Zero-shot foi pior em todos.</p></div>
+    <div class="card borda-acento"><span class="num" style="font-size:48px">3</span><h3>Ordem e calibração tiveram pouco efeito</h3><p class="suave peq">KATE e Ordenação não diferiram significativamente; nos grandes, o único viés foi pela última categoria da lista. SG-ICL e APE não compensaram o custo.</p></div>
+    <div class="card borda-acento"><span class="num" style="font-size:48px">4</span><h3>Parte dos erros vem da semelhança entre categorias</h3><p class="suave peq">Temas próximos, como Alimentação e Manejo e Reprodução.</p></div>
+  </div>
+  <div class="leitura"><span class="ic">Mensagem final</span><p>Selecionar exemplos semelhantes à pergunta é simples e eficaz. O <b>Qwen3.8 27B</b>, de pesos abertos, não diferiu significativamente do modelo comercial e é o candidato mais promissor para um assistente ao produtor; o 3B ainda não é viável (~39% de acerto).</p></div>
+  <aside class="nota">Para concluir. Primeiro, selecionar exemplos parecidos com a pergunta foi a estratégia mais consistente: KATE e Ordenação ficaram entre as melhores nos quatro modelos, e o melhor resultado foi o Qwen com KATE, 83,2% de F1-macro. Segundo, a técnica pesa muito mais no modelo pequeno, e o Zero-shot foi pior em todos. Terceiro, a ordem e a calibração tiveram pouco efeito, e técnicas mais caras, como SG-ICL e APE, não compensaram. Quarto, parte dos erros vem da semelhança entre categorias. A mensagem final: o Qwen de 27 bilhões, aberto, não diferiu significativamente do modelo comercial e é o candidato mais promissor para um assistente ao produtor.</aside>
+</section>
+
+<!-- ===================================================== 24 OBRIGADA -->
+<section class="slide escuro" data-secao="5" data-min="0.15" style="justify-content:center;gap:36px">
+  <h1 style="font-size:110px">Obrigada!</h1>
+  <p class="suave" style="font-size:32px">Monique Silva Machado · <span class="ph">[e-mail]</span></p>
+  <p class="suave" style="font-size:26px">Código, dados e respostas dos modelos: <span class="ph">[link do repositório]</span></p>
+  <p class="suave peq" style="margin-top:40px">Slides de apoio a seguir: tipologia das perguntas e instruções geradas pelo APE.</p>
+  <aside class="nota">Agradeço a atenção de todos, ao meu orientador, professor Sergio, e à banca. Fico à disposição para as perguntas.</aside>
+</section>
+
+<!-- ===================================================== 25 APOIO: TIPOLOGIA (dinâmico) -->
+<section class="slide" data-secao="6" data-min="0" style="gap:22px">
+  <div class="cab"><p class="eyebrow">Apoio · Tipologia das perguntas</p><h2>Perguntas booleanas ou descritivas: faz diferença?</h2></div>
+  <div class="abas" id="abasModeloTip"></div>
+  <div style="display:grid;grid-template-columns:1260px 1fr;gap:34px">
+    <div id="tabTipologia"></div>
+    <div class="card"><h3>Leitura</h3><p class="suave peq">Nos modelos grandes, a diferença foi pequena e sem direção consistente. No 3B, Zero-shot e APE erraram mais nas booleanas (14,5% × 31,8% no Zero-shot): sem exemplos, perguntas que começam com verbo dão menos pistas do tema.</p></div>
+  </div>
+  <p class="suave peq">Acurácia (%) sobre as 500 perguntas de teste: 138 booleanas e 362 descritivas.</p>
+  <aside class="nota">Slide de apoio, caso perguntem sobre a tipologia das perguntas. Nos modelos grandes, a diferença entre booleanas e descritivas foi pequena e sem direção consistente. No modelo de 3B, sem exemplos, as booleanas foram bem piores, provavelmente porque começam com verbos como "pode-se" ou "é possível" e trazem menos pistas do tema no início. Com KATE, essa diferença praticamente desaparece.</aside>
+</section>
+
+<!-- ===================================================== 26 APOIO: APE -->
+<section class="slide" data-secao="6" data-min="0">
+  <div class="cab"><p class="eyebrow">Apoio · Instruções geradas pelo APE (fold 1)</p><h2>O APE gerou, em geral, paráfrases da instrução original</h2></div>
+  <table class="t" style="font-size:23px">
+    <tr><th style="width:20%">Modelo</th><th>Instrução escolhida</th></tr>
+    <tr><td>Llama 3.2 3B</td><td>“A instrução que você deu ao seu amigo foi que ele levasse cada dúvida de produtor rural e escrevesse a categoria técnica correspondente.”</td></tr>
+    <tr><td>Qwen3.8 27B</td><td>“Leia cada dúvida de produtor rural e escreva a categoria técnica correspondente.”</td></tr>
+    <tr><td>Llama 3.3 70B</td><td>“Leia cada dúvida de produtor rural e escreva a categoria técnica correspondente, considerando o conteúdo e o tema abordado em cada pergunta […]”</td></tr>
+    <tr><td>Gemini 3.1 FL</td><td>“Classifique cada dúvida de produtor rural apresentada em uma das categorias técnicas predefinidas que melhor represente o tema central da pergunta […]”</td></tr>
+  </table>
+  <div class="leitura"><span class="ic">Por isso</span><p>Sem exemplos, o APE é na prática um Zero-shot com outra instrução, e ficou próximo dele nos modelos grandes.</p></div>
+  <aside class="nota">Slide de apoio sobre o APE. As instruções escolhidas foram, em geral, paráfrases da instrução original. Como o APE usa a instrução sem exemplos, ele é na prática um Zero-shot com outra frase, e por isso ficou próximo do Zero-shot nos modelos grandes. No Llama 3B ele foi a terceira melhor técnica, possivelmente porque, sem exemplos, o modelo não sofre o viés que vimos.</aside>
+</section>
+
+</div>
+
+<div id="notas"><div class="cabn"><span id="notasTit"></span><span class="tempo" id="notasTempo"></span></div><div id="notasTxt"></div></div>
+<div id="controles">
+  <button id="btAnt" title="Anterior (←)">‹</button>
+  <span id="contador"></span>
+  <button id="btProx" title="Próximo (→)">›</button>
+  <button id="btNotas" title="Falas e cronômetro (N)">Falas</button>
+  <button id="btTela" title="Tela cheia (F)">⛶</button>
+</div>
+
+<script>
+const DADOS = /*__DADOS__*/null;
+</script>
+<script>
+(function(){
+// ================= navegação, progresso, falas =================
+const stage=document.getElementById('stage');
+const slides=[...document.querySelectorAll('.slide')];
+const SECOES=['Problema','Técnicas','Método','Resultados','Conclusões'];
+const principais=slides.filter(s=>s.dataset.secao!=='6').length;
+let atual=0, inicio=null;
+slides.forEach((s,i)=>{
+  const sec=+s.dataset.secao;
+  const topo=document.createElement('div');topo.className='topo';
+  topo.innerHTML=`<span>Monique Machado · TCC II</span><span class="secoes">${SECOES.map((n,k)=>`<span class="${k+1===sec?'on':''}">${n}</span>`).join('')}</span>`;
+  if(i>0)s.appendChild(topo);
+  const rod=document.createElement('div');rod.className='rod';
+  rod.innerHTML=`<span></span><span>${i+1} / ${slides.length}</span>`;
+  if(i>0)s.appendChild(rod);
+  const b=document.createElement('div');b.className='barra';b.style.width=(Math.min(i+1,principais)/principais*100)+'%';
+  s.appendChild(b);
+});
+function ajustar(){const s=Math.min(innerWidth/1920,innerHeight/1080);
+  stage.style.transform=`translate(${(innerWidth-1920*s)/2}px,${(innerHeight-1080*s)/2}px) scale(${s})`;}
+const previsto=i=>slides.slice(0,i+1).reduce((a,s)=>a+(+s.dataset.min||0),0);
+const mmss=m=>{const t=Math.max(0,Math.round(m*60));return Math.floor(t/60)+':'+String(t%60).padStart(2,'0');};
+function atualizarNotas(){
+  const s=slides[atual], n=s.querySelector('aside.nota');
+  document.getElementById('notasTit').textContent=`SLIDE ${atual+1} / ${slides.length} · tempo sugerido ${mmss(+s.dataset.min||0)}`;
+  document.getElementById('notasTxt').textContent=n?n.textContent.trim():'';
+  const dec=inicio?(Date.now()-inicio)/60000:0, alvo=previsto(atual);
+  document.getElementById('notasTempo').innerHTML=inicio
+    ?`decorrido <b class="${dec>alvo+0.5?'atrasado':''}">${mmss(dec)}</b> · previsto até aqui ${mmss(alvo)} · total ${mmss(previsto(principais-1))}`
+    :'cronômetro inicia ao avançar o 1º slide';}
+function ir(n){atual=Math.max(0,Math.min(slides.length-1,n));
+  if(atual>0&&!inicio)inicio=Date.now();
+  slides.forEach((s,i)=>s.classList.toggle('ativo',i===atual));
+  document.getElementById('contador').textContent=(atual+1)+' / '+slides.length;
+  history.replaceState(null,'','#'+(atual+1));atualizarNotas();}
+setInterval(()=>{if(document.getElementById('notas').classList.contains('on'))atualizarNotas();},1000);
+function alternarNotas(){document.getElementById('notas').classList.toggle('on');atualizarNotas();}
+addEventListener('resize',ajustar);
+addEventListener('keydown',e=>{
+  if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();ir(atual+1);}
+  else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();ir(atual-1);}
+  else if(e.key==='Home')ir(0); else if(e.key==='End')ir(slides.length-1);
+  else if(e.key==='f'||e.key==='F')telaCheia();
+  else if(e.key==='n'||e.key==='N')alternarNotas();
+  else if(e.key==='r'||e.key==='R'){inicio=Date.now();atualizarNotas();}});
+function telaCheia(){if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(()=>{});else document.exitFullscreen();}
+document.getElementById('btAnt').onclick=()=>ir(atual-1);
+document.getElementById('btProx').onclick=()=>ir(atual+1);
+document.getElementById('btTela').onclick=telaCheia;
+document.getElementById('btNotas').onclick=alternarNotas;
+addEventListener('hashchange',()=>ir((parseInt(location.hash.slice(1))||1)-1));
+ajustar();ir((parseInt(location.hash.slice(1))||1)-1);
+
+// ================= utilidades =================
+const fmt=(v,c=1)=>v==null||isNaN(v)?'—':v.toFixed(c).replace('.',',');
+const COR={acento:'#00809A',acentoEsc:'#005F72',coral:'#D9573B',neutro:'#A9B6BA',tinta:'#0F2A30',suave:'#6A7B80',grade:'#E1E6E6'};
+function abas(id,rotulo,itens,ativo,aoMudar){
+  const el=document.getElementById(id);el.innerHTML='';
+  if(rotulo){const r=document.createElement('span');r.className='rot';r.textContent=rotulo;el.appendChild(r);}
+  itens.forEach(([valor,texto])=>{const b=document.createElement('button');b.textContent=texto;
+    b.classList.toggle('on',valor===ativo);
+    b.onclick=()=>{[...el.querySelectorAll('button')].forEach(x=>x.classList.remove('on'));b.classList.add('on');aoMudar(valor);};
+    el.appendChild(b);});}
+// dica flutuante para SVG/tabelas (data-dica)
+function ligarDicas(cont){
+  let d=cont.querySelector('.dica'); if(!d){d=document.createElement('div');d.className='dica';cont.appendChild(d);}
+  cont.onmousemove=e=>{const alvo=e.target.closest('[data-dica]');
+    if(!alvo){d.style.opacity=0;return;}
+    const r=cont.getBoundingClientRect(), esc=r.width/cont.offsetWidth||1;
+    d.innerHTML=alvo.dataset.dica; d.style.opacity=1;
+    let x=(e.clientX-r.left)/esc+18, y=(e.clientY-r.top)/esc+18;
+    if(x+d.offsetWidth>cont.offsetWidth)x-=d.offsetWidth+36;
+    d.style.left=x+'px'; d.style.top=y+'px';};
+  cont.onmouseleave=()=>{d.style.opacity=0;};}
+function semDados(id){const el=document.getElementById(id);if(el)el.innerHTML=
+  '<p class="aviso">Resultados ainda não gerados. Rode <b>python scripts/10_gerar_apresentacao.py</b> para preencher este slide.</p>';}
+
+// ================= 7: gráfico da base (estático, sempre disponível) =================
+(function(){
+  const cats=[['Cria e Recria de Bezerras e Novilhas',40],['Alimentação e Manejo de Vacas e Touros',94],['Recursos Forrageiros',155],['Reprodução',50],
+    ['Melhoramento Genético Animal',40],['Saúde Animal',35],['Mastite e Qualidade do Leite',35],['Produção Orgânica de Leite',8],
+    ['Gerenciamento da Atividade Leiteira',11],['Bem-estar Animal',14],['Instalações, Ambiência e Manejo de Dejetos',18]];
+  const W=1170,lh=58,x0=560,larg=W-x0-80,H=cats.length*lh;
+  let s=`<svg width="${W}" height="${H}" font-family="Inter, Arial" font-size="22">`;
+  cats.forEach(([n,v],i)=>{const y=i*lh, w=larg*v/155;
+    s+=`<g data-dica="<b>${n}</b><br>${v} perguntas (${fmt(v/5,1)}% da base)"><rect x="0" y="${y}" width="${W}" height="${lh}" fill="transparent"/>`+
+      `<text x="${x0-16}" y="${y+36}" text-anchor="end" fill="${COR.tinta}"><tspan fill="${COR.suave}" font-weight="600">${i+1}</tspan>  ${n}</text>`+
+      `<rect x="${x0}" y="${y+12}" width="${w}" height="34" rx="4" fill="${COR.acento}"/>`+
+      `<text x="${x0+w+10}" y="${y+37}" fill="${COR.tinta}" font-weight="700">${v}</text></g>`;});
+  const el=document.getElementById('graficoBase');el.style.position='relative';el.innerHTML=s+'</svg>';ligarDicas(el);
+})();
+
+const IDS_DIN=['tabResultados','graficoSig','graficoPorte','matriz','graficoDist','tabTipologia'];
+if(!DADOS){IDS_DIN.forEach(semDados);return;}
+
+const MOD=DADOS.modelos, MET=DADOS.metodos, CAT=DADOS.categorias, R=DADOS.resumo;
+const nomeMet=Object.fromEntries(MET.map(m=>[m.id,m.nome]));
+const nomeMod=Object.fromEntries(MOD.map(m=>[m.id,m.nome]));
+const METRICAS=[['f1','F1-macro'],['acc','Acurácia'],['prec','Precisão'],['rec','Recall'],['inv','% inválidas']];
+const NOME_METRICA={f1:'F1-macro',acc:'Acurácia',prec:'Precisão macro',rec:'Recall macro'};
+const melhorDe=(mod,met='f1')=>MET.map(t=>t.id).filter(t=>(R[mod]||{})[t]).reduce((a,b)=>R[mod][b][met]>R[mod][a][met]?b:a);
+
+// ================= 14: números de destaque =================
+(function(){
+  let best=null;MOD.forEach(m=>{const t=melhorDe(m.id);const v=R[m.id][t].f1;if(!best||v>best.v)best={m:m.id,t,v};});
+  if(best){document.getElementById('heroMelhor').textContent=fmt(best.v)+'%';
+    document.getElementById('heroMelhorTxt').textContent=`${nomeMod[best.m]} com ${nomeMet[best.t]}`;}
+  const p=MOD[0]&&R[MOD[0].id];if(p){const v=Object.values(p).map(x=>x.f1);
+    document.getElementById('heroAmpl').textContent=fmt(Math.max(...v)-Math.min(...v))+' pp';}
+})();
+
+// ================= 15: tabela de resultados =================
+let metricaTab='f1';
+function desenharTabela(){
+  const melhores=Object.fromEntries(MOD.map(m=>[m.id,metricaTab==='inv'?null:melhorDe(m.id,metricaTab)]));
+  let h='<table class="t" style="font-size:25px"><tr><th style="width:22%">Técnica</th>'+MOD.map(m=>`<th class="n">${m.nome}</th>`).join('')+'</tr>';
+  let parcial=false;
+  MET.forEach(t=>{h+=`<tr><td style="font-weight:600">${t.nome}</td>`;
+    MOD.forEach(m=>{const r=(R[m.id]||{})[t.id];
+      if(!r){h+='<td class="n">—</td>';return;}
+      const ast=r.folds<5?'*':''; if(ast)parcial=true;
+      if(metricaTab==='inv'){h+=`<td class="n${r.inv>0?'':' fraco'}">${fmt(r.inv)}%${ast}</td>`;return;}
+      const neg=r['neg_'+metricaTab], top=melhores[m.id]===t.id;
+      h+=`<td class="n ${top?'melhor':neg?'neg':'fraco'}">${fmt(r[metricaTab])} <span style="font-weight:400;opacity:.75;font-size:.8em">± ${fmt(r[metricaTab+'_ic'])}</span>${ast}</td>`;});
+    h+='</tr>';});
+  document.getElementById('tabResultados').innerHTML=h+'</table>';
+  document.getElementById('notaResultados').innerHTML=(metricaTab==='inv'
+    ?'Percentual de respostas fora das 11 categorias (contam como erro). Os três modelos maiores seguiram o formato em 100% dos casos.'
+    :(metricaTab==='prec'?'<b>Precisão</b>: das perguntas que o modelo colocou numa categoria, quantas eram dela (média das 11 categorias). ':metricaTab==='rec'?'<b>Recall</b>: das perguntas de cada categoria, quantas o modelo encontrou (média das 11 categorias). ':'')+'Média ± IC 95% nos 5 folds. <b style="color:#fff;background:#00809A;padding:1px 8px;border-radius:4px">Escuro</b> = melhor técnica do modelo · <b style="color:#005F72;background:#D6EEF1;padding:1px 8px;border-radius:4px">claro</b> = sem diferença significativa da melhor (teste t pareado, p &gt; 0,05).')
+    +(parcial?' <b>*</b> resultado parcial.':'');}
+abas('abasMetricaTab','Métrica:',METRICAS,metricaTab,v=>{metricaTab=v;desenharTabela();});
+desenharTabela();
+
+// ================= 16: significância =================
+let modSig=MOD[0]?MOD[0].id:null, metSig='f1';
+function desenharSig(){
+  const dados=MET.map(t=>({t,r:(R[modSig]||{})[t.id]})).filter(x=>x.r);
+  if(!dados.length){semDados('graficoSig');return;}
+  const W=1680,lh=50,H=dados.length*lh+36,x0=230,larg=W-x0-520;
+  const X=v=>x0+larg*Math.max(0,Math.min(100,v))/100;
+  let s=`<svg width="${W}" height="${H}" font-family="Inter, Arial" font-size="22">`;
+  [0,25,50,75,100].forEach(v=>{s+=`<line x1="${X(v)}" y1="0" x2="${X(v)}" y2="${H-30}" stroke="${COR.grade}"/>`+
+    `<text x="${X(v)}" y="${H-6}" text-anchor="middle" fill="${COR.suave}" font-size="18">${v}%</text>`;});
+  let iguais=[], piores=[], melhor='';
+  dados.forEach(({t,r},i)=>{const y=i*lh+4, v=r[metSig], ic=r[metSig+'_ic']||0,
+      neg=r['neg_'+metSig], p=r['p_'+metSig], cor=neg?COR.acento:COR.neutro;
+    if(p==null)melhor=t.nome; else (neg?iguais:piores).push(t.nome);
+    const rot=p==null?'melhor técnica':('p = '+fmt(p,3)+(neg?' · sem dif. significativa':' · pior'));
+    s+=`<g data-dica="<b>${t.nome}</b><br>${NOME_METRICA[metSig]}: ${fmt(v)}% ± ${fmt(ic)}<br>${p==null?'Melhor técnica deste modelo':'Teste t contra a melhor: p = '+fmt(p,3)+(neg?' (sem diferença significativa)':' (significativamente pior)')}">`+
+      `<rect x="0" y="${y}" width="${W}" height="${lh}" fill="transparent"/>`+
+      `<text x="${x0-16}" y="${y+30}" text-anchor="end" fill="${COR.tinta}" font-weight="${neg?700:400}">${t.nome}</text>`+
+      `<rect x="${x0}" y="${y+10}" width="${Math.max(0,X(v)-x0)}" height="28" rx="4" fill="${cor}"/>`;
+    if(ic>0)s+=`<path d="M${X(v-ic)} ${y+24}H${X(v+ic)}M${X(v-ic)} ${y+16}V${y+32}M${X(v+ic)} ${y+16}V${y+32}" stroke="${COR.tinta}" stroke-width="2" fill="none"/>`;
+    s+=`<text x="${X(100)+24}" y="${y+31}" fill="${neg?COR.acentoEsc:COR.suave}" font-weight="${neg?700:400}">${fmt(v)}% · ${rot}</text></g>`;});
+  const el=document.getElementById('graficoSig');el.innerHTML=s+'</svg>';ligarDicas(el);
+  document.getElementById('leituraSig').innerHTML=`<b>${nomeMod[modSig]}</b>: melhor técnica <b>${melhor}</b>. Sem diferença significativa: ${iguais.length?iguais.join(', '):'nenhuma'}. Significativamente piores: ${piores.length?piores.join(', '):'nenhuma'}.`;}
+abas('abasModeloSig','Modelo:',MOD.map(m=>[m.id,m.nome]),modSig,v=>{modSig=v;desenharSig();});
+abas('abasMetricaSig','Métrica:',METRICAS.slice(0,4),metSig,v=>{metSig=v;desenharSig();});
+desenharSig();
+
+// ================= 17: porte do modelo (pontos por técnica) =================
+(function(){
+  const W=1680,lh=132,x0=330,x1=W-330,H=MOD.length*lh+50;
+  const PV={'ollama':'p < 0,001','qwen':'referência','llama-70b':'p = 0,039','gemini':'p = 0,437'};
+  const X=v=>x0+(x1-x0)*v/100;
+  let s=`<svg width="${W}" height="${H}" font-family="Inter, Arial" font-size="21">`;
+  [0,20,40,60,80,100].forEach(v=>{s+=`<line x1="${X(v)}" y1="0" x2="${X(v)}" y2="${H-36}" stroke="${COR.grade}"/><text x="${X(v)}" y="${H-8}" text-anchor="middle" fill="${COR.suave}" font-size="18">${v}%</text>`;});
+  
+  MOD.forEach((m,i)=>{const yc=i*lh+lh/2, r=R[m.id]||{}, ts=MET.filter(t=>r[t.id]);
+    const vals=ts.map(t=>r[t.id].f1), mn=Math.min(...vals), mx=Math.max(...vals), best=melhorDe(m.id);
+    s+=`<text x="${x0-30}" y="${yc-4}" text-anchor="end" fill="${COR.tinta}" font-weight="700" font-size="25">${m.nome}</text>`+
+       `<text x="${x0-30}" y="${yc+26}" text-anchor="end" fill="${COR.suave}" font-size="19">amplitude ${fmt(mx-mn)} pp</text>`+
+       `<rect x="${X(mn)}" y="${yc-22}" width="${X(mx)-X(mn)}" height="44" rx="22" fill="${COR.acento}" opacity=".12"/>`;
+    // pontos: deslocamento vertical simples para evitar sobreposição
+    const pos=ts.map(t=>({t,v:r[t.id].f1})).sort((a,b)=>a.v-b.v); let ult=-99, lado=1;
+    pos.forEach(({t,v})=>{let dy=0; if(X(v)-ult<16){dy=lado*14;lado=-lado;} else {lado=1;ult=X(v);}
+      const neg=r[t.id].neg_f1, top=t.id===best, zs=t.id==='zeroshot';
+      const cor=top?COR.acentoEsc:zs?COR.coral:neg?COR.acento:COR.neutro;
+      s+=`<g data-dica="<b>${m.nome} · ${t.nome}</b><br>F1-macro: ${fmt(v)}%<br>${top?'melhor técnica':neg?'sem diferença significativa da melhor':'significativamente pior que a melhor'}">`+
+         `<circle cx="${X(v)}" cy="${yc+dy}" r="${top?13:10}" fill="${cor}" stroke="#fff" stroke-width="2"/></g>`;});
+    const vz=r.zeroshot?r.zeroshot.f1:null, vb=r[best].f1;
+    if(vz!=null)s+=`<text x="${X(vz)}" y="${yc-32}" text-anchor="middle" fill="${COR.coral}" font-size="18" font-weight="700">Zero-shot</text>`;
+    s+=`<text x="${X(vb)}" y="${yc+48}" text-anchor="middle" fill="${COR.acentoEsc}" font-size="18" font-weight="700">${nomeMet[best]} ${fmt(vb)}%</text>`;
+    s+=`<text x="${x1+40}" y="${yc-2}" fill="${COR.suave}" font-size="17">melhor × Qwen + KATE</text><text x="${x1+40}" y="${yc+24}" fill="${COR.tinta}" font-size="22" font-weight="700">${PV[m.id]||''}</text>`;});
+  s+=`<g font-size="18" fill="${COR.tinta}"><circle cx="${x0}" cy="${H-50+28}" r="0"/></g>`;
+  const el=document.getElementById('graficoPorte');
+  el.innerHTML=s+'</svg>'+`<div style="display:flex;gap:28px;font-size:19px;color:${COR.tinta2||'#3E5258'};margin-top:4px">`+
+    `<span><svg width="20" height="20"><circle cx="10" cy="10" r="8" fill="${COR.acentoEsc}"/></svg> melhor técnica</span>`+
+    `<span><svg width="20" height="20"><circle cx="10" cy="10" r="8" fill="${COR.acento}"/></svg> sem diferença significativa da melhor</span>`+
+    `<span><svg width="20" height="20"><circle cx="10" cy="10" r="8" fill="${COR.neutro}"/></svg> significativamente pior</span>`+
+    `<span><svg width="20" height="20"><circle cx="10" cy="10" r="8" fill="${COR.coral}"/></svg> Zero-shot</span>`+
+    `<span style="color:${COR.suave}">· eixo: F1-macro (%) · passe o mouse sobre os pontos</span></div>`;
+  ligarDicas(el);
+})();
+
+// ================= 18: matriz de confusão =================
+let modCM=MOD.find(m=>m.id==='qwen')?'qwen':MOD[0].id, metCM=MET.find(m=>m.id==='kate')?'kate':MET[0].id, modoCM='pct';
+function desenharCM(){
+  const M=((DADOS.matrizes||{})[modCM]||{})[metCM];
+  if(!M){document.getElementById('infoCM').textContent='';document.getElementById('matriz').innerHTML='<p class="aviso">Esta combinação ainda não foi executada.</p>';return;}
+  let tot=0,ok=0,inv=0;M.forEach((l,i)=>l.forEach((v,j)=>{tot+=v;if(i===j)ok+=v;if(j===CAT.length)inv+=v;}));
+  const r=(R[modCM]||{})[metCM]||{};
+  document.getElementById('infoCM').innerHTML=`<b>${nomeMod[modCM]} · ${nomeMet[metCM]}</b>, acurácia <b>${fmt(ok/tot*100)}%</b> · F1-macro <b>${fmt(r.f1)}%</b> · precisão <b>${fmt(r.prec)}%</b> · recall <b>${fmt(r.rec)}%</b> · ${inv} inválidas`;
+  let h='<table class="cm"><tr><th></th>'+CAT.map(c=>`<th>${c.num}</th>`).join('')+'<th>Inv.</th><th>Recall</th></tr>';
+  M.forEach((l,i)=>{const soma=l.reduce((a,b)=>a+b,0)||1;
+    h+=`<tr><th class="lin">${CAT[i].num} · ${CAT[i].curto}</th>`;
+    l.forEach((v,j)=>{const frac=v/soma, a=v?Math.min(.95,.14+.86*frac):0, diag=i===j, inval=j===CAT.length;
+      const fundo=v?(diag?`rgba(0,128,154,${a})`:`rgba(217,87,59,${Math.min(.9,a*.95)})`):(inval?'#F1F2F0':'#fff');
+      const txt=modoCM==='pct'?(v?Math.round(frac*100):''):(v||'');
+      const nomePrev=inval?'Resposta inválida':CAT[j].nome;
+      h+=`<td${inval?' class="inv"':''} style="background:${fundo};color:${a>.5?'#fff':'#0F2A30'}" data-dica="Verdadeira: <b>${CAT[i].nome}</b><br>Prevista: <b>${nomePrev}</b><br>${v} perguntas (${fmt(frac*100)}% da linha)">${txt}</td>`;});
+    h+=`<td class="rec">${fmt(l[i]/soma*100,0)}%</td></tr>`;});
+  h+='<tr><th class="lin" style="color:#0F2A30">Precisão</th>';
+  CAT.forEach((c,j)=>{const col=M.reduce((a,l)=>a+l[j],0);
+    h+=`<td class="rec" style="width:62px" data-dica="<b>${c.nome}</b><br>O modelo respondeu esta categoria ${col} vezes; ${M[j][j]} estavam certas.">${col?fmt(M[j][j]/col*100,0)+'%':'—'}</td>`;});
+  h+='<td class="rec"></td><td class="rec"></td></tr>';
+  const el=document.getElementById('matriz');el.innerHTML=h+'</table>';ligarDicas(el);}
+abas('abasModeloCM','Modelo:',MOD.map(m=>[m.id,m.nome]),modCM,v=>{modCM=v;desenharCM();});
+abas('abasMetodoCM','Técnica:',MET.map(m=>[m.id,m.nome]),metCM,v=>{metCM=v;desenharCM();});
+abas('abasModoCM','Mostrar:',[['pct','% da linha'],['cont','Contagem']],modoCM,v=>{modoCM=v;desenharCM();});
+desenharCM();
+
+// ================= 20: distribuição das respostas =================
+let modD=MOD[0].id, metD=MET.find(m=>m.id==='fewshot')?'fewshot':MET[0].id;
+function desenharDist(){
+  const M=((DADOS.matrizes||{})[modD]||{})[metD];
+  const el=document.getElementById('graficoDist');
+  if(!M){el.innerHTML='<p class="aviso">Esta combinação ainda não foi executada.</p>';return;}
+  const n=CAT.length, tot=M.reduce((a,l)=>a+l.reduce((x,y)=>x+y,0),0)||1;
+  const real=M.map(l=>l.reduce((a,b)=>a+b,0)/tot*100);
+  const prev=[...Array(n+1).keys()].map(j=>M.reduce((a,l)=>a+l[j],0)/tot*100);
+  const W=1160,H=540,b=56,x0=64,gw=(W-x0-10)/(n+1),mx=Math.ceil(Math.max(10,...real,...prev)/10)*10;
+  const Y=v=>H-b-(H-b-56)*v/mx;
+  let s=`<svg width="${W}" height="${H}" font-family="Inter, Arial" font-size="19">`;
+  for(let v=0;v<=mx;v+=mx>50?20:10)s+=`<line x1="${x0}" y1="${Y(v)}" x2="${W}" y2="${Y(v)}" stroke="${COR.grade}"/><text x="${x0-10}" y="${Y(v)+6}" text-anchor="end" fill="${COR.suave}">${v}%</text>`;
+  for(let j=0;j<=n;j++){const gx=x0+j*gw+gw*.12,bw=gw*.36;
+    const nome=j<n?CAT[j].nome:'Resposta inválida';
+    s+=`<g data-dica="<b>${nome}</b><br>Perguntas reais: ${j<n?fmt(real[j])+'%':'—'}<br>Respostas do modelo: ${fmt(prev[j])}%"><rect x="${x0+j*gw}" y="40" width="${gw}" height="${H-b-40}" fill="transparent"/>`;
+    if(j<n)s+=`<rect x="${gx}" y="${Y(real[j])}" width="${bw-2}" height="${H-b-Y(real[j])}" rx="3" fill="${COR.neutro}"/>`;
+    s+=`<rect x="${gx+bw}" y="${Y(prev[j])}" width="${bw-2}" height="${H-b-Y(prev[j])}" rx="3" fill="${COR.coral}"/>`;
+    if(prev[j]>=25)s+=`<text x="${gx+bw+bw/2}" y="${Y(prev[j])-8}" text-anchor="middle" fill="${COR.tinta}" font-weight="700">${fmt(prev[j],0)}%</text>`;
+    s+=`<text x="${gx+bw}" y="${H-b+28}" text-anchor="middle" fill="${COR.tinta}">${j<n?CAT[j].num:'Inv.'}</text></g>`;}
+  s+=`<rect x="${x0+10}" y="6" width="20" height="20" rx="3" fill="${COR.neutro}"/><text x="${x0+38}" y="22" fill="${COR.tinta}">Perguntas reais por categoria</text>`+
+     `<rect x="${x0+380}" y="6" width="20" height="20" rx="3" fill="${COR.coral}"/><text x="${x0+408}" y="22" fill="${COR.tinta}">Respostas do modelo (${nomeMod[modD]} · ${nomeMet[metD]})</text>`;
+  el.innerHTML=s+'</svg>';ligarDicas(el);}
+abas('abasModeloDist','Modelo:',MOD.map(m=>[m.id,m.nome]),modD,v=>{modD=v;desenharDist();});
+abas('abasMetodoDist','Técnica:',MET.map(m=>[m.id,m.nome]),metD,v=>{metD=v;desenharDist();});
+desenharDist();
+
+// ================= 21: calibração (atualiza a partir dos dados, se houver) =================
+(function(){const c=DADOS.calibracao||{};const ordem=['ollama','qwen','llama-70b','gemini'];
+  const tab=document.getElementById('tabCalib');if(!tab||!ordem.every(m=>c[m]))return;
+  ordem.forEach((m,k)=>{tab.rows[1].cells[k+1].textContent=fmt(c[m].sem);tab.rows[2].cells[k+1].textContent=fmt(c[m].com);});})();
+
+// ================= 25: tipologia =================
+let modT=MOD[0].id;
+function desenharTip(){
+  const T=(DADOS.tipologia||{})[modT]||{};
+  let h='<table class="t" style="font-size:24px"><tr><th style="width:30%">Técnica</th><th class="n">Booleanas (138)</th><th class="n">Descritivas (362)</th><th class="n">Diferença (B − D)</th></tr>';
+  MET.forEach(t=>{const x=T[t.id];
+    if(!x){h+=`<tr><td>${t.nome}</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>`;return;}
+    const b=(x.Booleana||{}).acc,d=(x.Descritiva||{}).acc,dif=(b!=null&&d!=null)?b-d:null;
+    h+=`<tr><td style="font-weight:600">${t.nome}</td><td class="n">${fmt(b)}</td><td class="n">${fmt(d)}</td><td class="n" style="font-weight:700;color:${dif>0?COR.acentoEsc:'#A63A22'}">${dif==null?'—':(dif>0?'+':'')+fmt(dif)}</td></tr>`;});
+  document.getElementById('tabTipologia').innerHTML=h+'</table>';}
+abas('abasModeloTip','Modelo:',MOD.map(m=>[m.id,m.nome]),modT,v=>{modT=v;desenharTip();});
+desenharTip();
+})();
+</script>
+</body>
+</html>
